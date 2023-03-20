@@ -1,38 +1,129 @@
-import { Menu, Transition } from '@headlessui/react'
+import { Menu, Transition } from "@headlessui/react";
+import Image from "next/image"
+import Link from 'next/link'
 
-	
-		const links = [
-			{ href: '/account-settings', label: 'Account settings' },
-			{ href: '/support', label: 'Support' },
-			{ href: '/license', label: 'License' },
-			{ href: '/sign-out', label: 'Sign out' },
-		  ]
-		  
-		 export default function Nav() {
-			return (
-			  <Menu>
-				<Menu.Button>Options</Menu.Button>
-				<Transition
-        enter="transition duration-100 ease-out"
-        enterFrom="transform scale-95 opacity-0"
-        enterTo="transform scale-100 opacity-100"
-        leave="transition duration-75 ease-out"
-        leaveFrom="transform scale-100 opacity-100"
-        leaveTo="transform scale-95 opacity-0"
-      >
-				<Menu.Items>
-				  {links.map((link) => (
-					<Menu.Item
-					  as="a"
-					  key={link.href}
-					  href={link.href}
-					  className="ui-active:bg-blue-500 ui-active:text-white ui-not-active:bg-white ui-not-active:text-black"
-					>
-					  {link.label}
-					</Menu.Item>
-				  ))}
-				</Menu.Items>
-				</Transition>
-			  </Menu>
-			)
-		  }
+const links = [
+  { href: "/shop", label: "Shop" },
+  { href: "/sell", label: "Sell" },
+  { href: "/login", label: "Login" },
+  { href: "/signup", label: "Sign Up" },
+];
+
+export default function Nav() {
+  return (
+    <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-start grow flex-1">
+        <Logo />
+      </div>
+
+      <div className="flex items-center justify-end grow flex-1">
+		<div className="sm:block hidden">
+		<InlineMenu/>
+		</div>
+		<div className="sm:hidden block">
+
+        <HamMenu />
+		</div>
+      </div>
+    </div>
+  );
+}
+
+function Logo() {
+  return (
+    <Image
+      className="object-contain rounded-full"
+      src="/logo.jpg"
+      alt="logo of Luther Marketplace"
+      width={75}
+      priority={true}
+      height={75}
+      style={{ width: 75, height: 75 }}
+    />
+  );
+}
+
+function InlineMenu(){
+	return(
+		<nav className="flex flex-row items-center justify-between">
+    <div className="text-lg lg:flex-grow">
+                  {links.map((link) => {
+                    return (
+
+      <div key={link.href} className=" mt-4 inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+<Link href={link.href}>{link.label}</Link>
+		
+      </div>
+                    );
+                  })}
+    </div>
+</nav>
+	)
+}
+
+function HamMenu() {
+  return (
+    <div className="relative inline-block text-left">
+      <Menu>
+        {({ open }) => (
+          <>
+            <span className="rounded-md shadow-sm">
+              <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out   hover:text-gray-50 focus:outline-none  focus:shadow-outline-blue  active:text-gray-80">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
+                  />
+                </svg>
+              </Menu.Button>
+            </span>
+
+            <Transition
+              show={open}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items
+                static
+                className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+              >
+                <div className="py-1">
+                  {links.map((link) => {
+                    return (
+                      <Menu.Item key={link.href}>
+                        {({ active }) => (
+                          <a
+                            href={link.href}
+                            className={`${
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700"
+                            } flex justify-between w-full px-4 py-2 text-sm leading-5 text-left`}
+                          >
+                            {link.label}
+                          </a>
+                        )}
+                      </Menu.Item>
+                    );
+                  })}
+                </div>
+              </Menu.Items>
+            </Transition>
+          </>
+        )}
+      </Menu>
+    </div>
+  );
+}
