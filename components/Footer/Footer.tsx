@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="flex flex-col justify-center">
             <LogoBrand />
           </div>
-          <div className="flex flex-col py-2 space-y-6 justify-self-end">
+          <div className="flex flex-col py-3 sm:py-2 space-y-6 justify-self-end">
             <ContactSection />
           </div>
         </div>
@@ -24,7 +24,7 @@ export default function Footer() {
 function LogoBrand() {
   return (
     <>
-      <div className="flex flex-row items-center space-x-5">
+      <div className="flex flex-row items-center space-x-2 sm:space-x-5 ">
         <Image
           className="object-contain rounded-full md:w-50 md:h-50"
           src="/logo.jpg"
@@ -34,7 +34,7 @@ function LogoBrand() {
           height={50}
           style={{ width: 50, height: 50 }}
         />
-        <span className="text-center text-xl font-bold">LutherMarketplace</span>
+        <span className="text-center text-xl font-bold">LCMarketplace</span>
       </div>
       <div className="text-md font-bold">
         Providing sustainable services to our community
@@ -46,7 +46,7 @@ function LogoBrand() {
 function ContactSection() {
   return (
     <>
-      <div className="text-2xl font-bold">Contact us</div>
+      <div className="text-lg sm:text-2xl text-center sm:text-none font-bold">Contact us</div>
       <div className="flex flex-row space-x-6 items-center">
         <Link href="#">
           <svg
