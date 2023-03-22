@@ -1,4 +1,5 @@
 import Nav from "../Nav/Nav";
+import Footer from "../Footer/Footer";
 export default function Layout({ children }: { children: any }) {
   return (
     <>
@@ -6,6 +7,7 @@ export default function Layout({ children }: { children: any }) {
         <div className="max-w-screen-lg mx-auto my-0"> 
         <Nav />
          {children}
+         <Footer />
          </div>
       </div>
     </>
