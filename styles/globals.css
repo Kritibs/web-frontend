@@ -1,7 +1,7 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+  --font-mono: 'Circular Std', Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
@@ -109,3 +109,72 @@ a {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+
+
+
+/* SHOP PAGE */
+
+.headerimagecontainer{
+  background-image: url("https://luthermarketplace.w3spaces.com/images/image1-copy.png?bypass-cache=63318117");
+  background-color: black;
+  height: 460px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  width: 100vw;
+  top: 50%;
+  left:50%;
+  -webkit-transform:translate(-50%,-50%);
+  transform:translate(-50%,-0%);
+  /* background-image:cross-fade(50); */
+}
+
+.textheader{
+  text-align: center;
+  padding-top: 105px;
+}
+
+.searchbar{
+  margin:0 auto;
+  width:45%;
+  border-radius:30px;
+  border:1px solid #dcdcdc;
+  background-color: white;
+  margin-top: 30px;
+}
+
+.searchbar:hover{
+  box-shadow: 1px 1px 8px 1px #1c1c1c;
+}
+
+.searchbar:focus-within{
+  box-shadow: 1px 1px 8px 1px #1c1c1c;
+  outline:none;
+}
+
+.searchfield {
+  height:45px;
+  border:none;
+  width: 88%;
+  font-size:16px;
+  outline: none;
+  margin-left: 20px;
+}
+
+.parentheadtext{
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1em;
+}
+
+.subheadtext{
+  color: white;
+  font-stretch:wider;
+  font-weight: 400;
+}
