@@ -1,0 +1,174 @@
+/* SHOP PAGE */
+
+.headerimagecontainer{
+  background-image: url("https://luthermarketplace.w3spaces.com/images/image1-copy.png?bypass-cache=63318117");
+  background-color: black;
+  height: 460px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  width: 100vw;
+  top: 50%;
+  left:50%;
+  -webkit-transform:translate(-50%,-50%);
+  transform:translate(-50%,-0%);
+  /* background-image:cross-fade(50); */
+}
+
+.textheader{
+  text-align: center;
+  padding-top: 105px;
+}
+
+.searchbar{
+  margin:0 auto;
+  width:45%;
+  border-radius:30px;
+  border:1px solid #dcdcdc;
+  background-color: white;
+  margin-top: 30px;
+}
+
+.searchbar:hover{
+  box-shadow: 1px 1px 8px 1px #1c1c1c;
+}
+
+.searchbar:focus-within{
+  box-shadow: 1px 1px 8px 1px #1c1c1c;
+  outline:none;
+}
+
+.searchfield {
+  height:45px;
+  border:none;
+  width: 88%;
+  font-size:16px;
+  outline: none;
+  margin-left: 20px;
+}
+
+.parentheadtext{
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1em;
+}
+
+.subheadtext{
+  color: white;
+  font-stretch:wider;
+  font-weight: 400;
+}
+
+.productgrid {
+  padding-top: 55px;
+  padding-bottom: 55px;
+}
+
+.productgrid .productcard {
+  width: 330px;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+  transition: 0.3s;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 10px;
+  border: 1px solid;
+  border-color: #2f90fe00;
+}
+
+.productgrid .productcard:hover {
+  border: 1px solid;
+  border-color: #2F8EFE;
+  box-shadow: 1px 1px 20px -3px #b6b9ba;
+  transition: 0.3s;
+
+}
+
+.productgrid .productcard:hover .productcontent .productdetails {
+  color: #2F8EFE;
+  transition: 0.3s;
+}
+
+.productgrid .productcard .productimage {
+  height: 12rem;
+  border-radius: 5px;
+  object-fit: cover;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.productcard:hover .productimage {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+
+.productgrid .productcard .productcontent {
+  padding: 10px 20px 22px 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+}
+
+
+.productcontent .productdetails {
+  margin-top: 5px;
+  font-size: 26px;
+  font-weight: 700;
+  max-width: 100%;
+  transition: 0.3s;
+}
+
+.productcontent .productbio {
+  padding-top: 15px;
+  padding-bottom: 25px;
+  font-size: 11px;
+  font-weight: 300;
+  color: #666666;
+}
+
+.productcontent .productprice {
+  font-size: 30px;
+  font-family: Circular Std;
+  font-weight: 300;
+  color: #2F8EFE;
+}
+
+.productcontent .productcondition {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 9px 9px;
+  font-size: 9px;
+  font-weight: 700;
+  background-color: white;
+  text-align: center;
+  line-height: 0px;
+  color: #2F8EFE;
+  border: 1px solid;
+  border-color: #2F8EFE;
+  border-radius: 20px;
+}
+
+.productconditiontext {
+  margin: 0px;
+}
+
+@media screen and (max-width:600px) {
+  /* For mobile phones: */
+      .searchfield {
+          width: Auto;
+          margin-left: 20px;
+      }
+
+      .searchbar {
+          width: 90%;
+      } 
+}
