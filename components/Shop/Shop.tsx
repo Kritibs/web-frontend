@@ -25,10 +25,10 @@ export default function Shop() {
 
 		<div className={styles.productgrid}>
 			<div className={styles.productcard} /* key={product.id} */>
-				<Image className={styles.productimage}
+				{/* <Image className={styles.productimage}
 				 src="https://images.pexels.com/photos/7303738/pexels-photo-7303738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
 				 width={500} height={500} alt="Search bar picture"
-				 />	
+				 />	 */}
 				<div className={styles.productcontent}>
 					<div>
 						<div className={styles.productdetails}>
