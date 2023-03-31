@@ -2,13 +2,18 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "10.28.164.119",
-      },
-    ],
+      domains: ["seniorproject-mvp.herokuapp.com","10.28.164.119"]
   },
 };
 
 module.exports = nextConfig;
+
+
+//production
+
+  // remotePatterns: [
+  //   {
+  //     protocol: "https",
+  //     hostname: "seniorproject-mvp.herokuapp.com",
+  //   },
+  // ],

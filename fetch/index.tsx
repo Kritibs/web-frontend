@@ -1,25 +1,6 @@
 
 const baseURL = process.env.NEXT_PUBLIC_baseURL!;
 
-// export function fetcher(url:string, request_method:string, content_type:string ='', data:any={}){
-// 	if (request_method=="GET"){
-// 		return get_fetcher(url)
-// 	}
-// 	else if (request_method=="POST"){
-// 		return post_fetcher(url,request_method, content_type, data)
-// 	}
-// 	else if (request_method=="PATCH"){
-// 		return patch_fetcher(url,request_method, content_type, data)
-// 	}
-// 	else if (request_method=="DELETE"){
-// 		return del_fetcher(url,request_method)
-// 	}
-// 	else{
-
-// 	return get_fetcher(url)
-// 	}
-
-// }
 
 export function post_fetcher (url:string,request_method:string,content_type:string, data:string){
 	if (url=="login/"){
@@ -35,7 +16,6 @@ export function post_fetcher (url:string,request_method:string,content_type:stri
 			"Accept": "application/json",
 		}
 ,	
-		// body: JSON.stringify(data),
 		body: data,
 	})
 		.then((res) => res.json())
