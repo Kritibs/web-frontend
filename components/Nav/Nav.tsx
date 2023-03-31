@@ -20,7 +20,7 @@ export default function Nav() {
 		<div className="sm:block hidden">
 		<InlineMenu/>
 		</div>
-		<div className="sm:hidden block">
+		<div className="sm:hidden block z-10">
 
         <HamMenu />
 		</div>
