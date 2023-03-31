@@ -1,21 +1,27 @@
 
-const baseURL = process.env.baseURL;
-export function fetcher(url:string, request_method:string, content_type:string ='', data:any){
-	if (request_method=="GET"){
-		return get_fetcher(url)
-	}
-	else if (request_method=="POST"){
-		return post_fetcher(url,request_method, content_type, data)
-	}
-	else if (request_method=="PATCH"){
-		return patch_fetcher(url,request_method, content_type, data)
-	}
-	else if (request_method=="DELETE"){
-		return del_fetcher(url,request_method)
-}
-}
+const baseURL = process.env.NEXT_PUBLIC_baseURL!;
 
-function post_fetcher (url:string,request_method:string,content_type:string, data:string){
+// export function fetcher(url:string, request_method:string, content_type:string ='', data:any={}){
+// 	if (request_method=="GET"){
+// 		return get_fetcher(url)
+// 	}
+// 	else if (request_method=="POST"){
+// 		return post_fetcher(url,request_method, content_type, data)
+// 	}
+// 	else if (request_method=="PATCH"){
+// 		return patch_fetcher(url,request_method, content_type, data)
+// 	}
+// 	else if (request_method=="DELETE"){
+// 		return del_fetcher(url,request_method)
+// 	}
+// 	else{
+
+// 	return get_fetcher(url)
+// 	}
+
+// }
+
+export function post_fetcher (url:string,request_method:string,content_type:string, data:string){
 	if (url=="login/"){
 	return fetch(baseURL + url, {
 		method: request_method,
@@ -62,7 +68,7 @@ function post_fetcher (url:string,request_method:string,content_type:string, dat
 
 
 
-function patch_fetcher (url:string,request_method:string,content_type:string, data:string){
+export function patch_fetcher (url:string,request_method:string,content_type:string, data:string){
 	return fetch(baseURL + url, {
 		method: request_method,
 		// body: JSON.stringify(data),
@@ -79,7 +85,8 @@ function patch_fetcher (url:string,request_method:string,content_type:string, da
 };
 
 export function get_fetcher (url:string) {
-	return fetch(baseURL + url, {
+	const finalURL=baseURL.concat(url)
+	return fetch(finalURL, {
 		method: 'GET',
 
 	})
@@ -91,14 +98,14 @@ export function get_fetcher (url:string) {
 };
 
 
-function del_fetcher (url:string,request_method:string){
+export function del_fetcher (url:string){
 		const headers_data={ 
 		"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
 			"Accept": "application/json",
 		}
     let headers= new Headers(headers_data)
 	return fetch(baseURL + url, {
-		method: request_method,
+		method: "DELETE",
         headers: headers
 ,	
 	})

@@ -61,13 +61,8 @@
   font-weight: 400;
 }
 
-.productgrid {
-  padding-top: 55px;
-  padding-bottom: 55px;
-}
 
 .productgrid .productcard {
-  width: 330px;
   background: white;
   position: relative;
   overflow: hidden;
@@ -83,9 +78,7 @@
 }
 
 .productgrid .productcard:hover {
-  border: 1px solid;
   border-color: #2F8EFE;
-  box-shadow: 1px 1px 20px -3px #b6b9ba;
   transition: 0.3s;
 
 }
@@ -104,7 +97,7 @@
 }
 
 .productcard:hover .productimage {
-  transform: scale(1.05);
+  transform: scale(1.01);
   transition: 0.3s;
 }
 
@@ -120,6 +113,7 @@
 
 
 .productcontent .productdetails {
+  color: #1c1c1c;
   margin-top: 5px;
   font-size: 26px;
   font-weight: 700;
@@ -130,9 +124,10 @@
 .productcontent .productbio {
   padding-top: 15px;
   padding-bottom: 25px;
-  font-size: 11px;
+  font-size: 25px;
   font-weight: 300;
   color: #666666;
+  white-space: nowrap;
 }
 
 .productcontent .productprice {
