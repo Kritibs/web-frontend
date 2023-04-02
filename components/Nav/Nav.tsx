@@ -4,8 +4,19 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Nav() {
-  const [token, setToken] = useState<string>("");
-  useEffect(() => setToken(localStorage.getItem("access_token")), []);
+  const [token, setToken] = useState<string|null>();
+  useEffect(() => {
+    if (localStorage.getItem("access_token")!==null){
+    setToken(localStorage.getItem("access_token"))
+    }
+    else{
+
+    setToken('')
+    }
+
+  },
+  []
+    );
   if (token !== "") {
     var links = [
       { href: "/shop", label: "Shop" },
