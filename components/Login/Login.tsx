@@ -8,21 +8,21 @@ interface User {
   email: string;
   password: string;
 }
-const UserLogin = ({fields}:{fields:User}) => {
+const UserLogin = ({ fields }: { fields: User }) => {
   const router = useRouter();
-  const { data, error } =useSWR(
+  const { data, error } = useSWR(
     ["token/", "application/json", JSON.stringify(fields)],
     ([url, content_type, data]) => post_fetcher(url, content_type, data)
   );
 
-  if (error) return <p className="mt-5 text-red-500">{error.message}</p>
-  else if (!data) return <h1>I am loading</h1>
-   else {
+  if (error) return <p className="mt-5 text-red-500">{error.message}</p>;
+  else if (!data) return <h1>I am loading</h1>;
+  else {
     localStorage.setItem("access_token", data.access);
     localStorage.setItem("refresh_token", data.refresh);
 
     router.push("/shop");
-    return (null);
+    return null;
   }
 };
 
@@ -57,7 +57,7 @@ export default function Login() {
               Email
             </label>
             <input
-            name="email"
+              name="email"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               id="email"
               type="text"
@@ -73,7 +73,7 @@ export default function Login() {
               Password
             </label>
             <input
-            name="password"
+              name="password"
               className="shadow appearance-none border rounded w-full py-2 px-3 dark:text-gray-300 text-gray-800 mb-3 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               id="password"
               type="password"
@@ -105,9 +105,8 @@ export default function Login() {
               Sign up
             </Link>
           </p>
-          
-{startFetching && <UserLogin fields={fields}/>}
 
+          {startFetching && <UserLogin fields={fields} />}
         </form>
       </div>
     </div>

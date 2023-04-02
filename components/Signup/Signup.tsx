@@ -1,4 +1,117 @@
+import { useState } from "react";
+import { post_fetcher } from "../../fetch/";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+
+interface User {
+  first_name: string;
+  last_name: string;
+  email: string;
+  class_status: string;
+  password: string;
+  password2: string;
+}
+var errors= {
+  first_name: "",
+  last_name: "",
+  email: "",
+  class_status: "",
+  password: "",
+  password2: "",
+};
+// const errors: { [index: string]: string; } = {};
+const UserSignup = ({ fields }: { fields: User }) => {
+
+  const validation = () => {
+    let activeItem = fields;
+    let isValid = true;
+
+    if (!activeItem["email"]) {
+      isValid = false;
+      errors["email"] = "Please enter your email Address.";
+    }
+    if (!activeItem["first_name"]) {
+      isValid = false;
+      errors["first_name"] = "Please enter your First Name.";
+    }
+    if (!activeItem["last_name"]) {
+      isValid = false;
+      errors["last_name"] = "Please enter your Last Name.";
+    }
+    if (!activeItem["class_status"]) {
+      isValid = false;
+      errors["class_status"] = "Please enter your Class Status.";
+    }
+    if (!activeItem["password"]) {
+      isValid = false;
+      errors["password"] = "Please enter your Password.";
+    }
+
+    if (
+      typeof activeItem["password"] !== "undefined" &&
+      typeof activeItem["password2"] !== "undefined"
+    ) {
+      if (activeItem["password"] !== activeItem["password2"]) {
+        isValid = false;
+        errors["password2"] = "Passwords don't match.";
+      }
+    }
+
+    return isValid;
+  };
+
+  const router = useRouter();
+  console.log(fields)
+    const { data, error } = useSWR(
+      ["accounts/", "application/json", JSON.stringify(fields)],
+      ([url, content_type, data]) => post_fetcher(url, content_type, data)
+    );
+
+    if (error) return <p className="mt-5 text-red-500">Signup Error: Please Try again.</p>;
+    // else if (!data) return <h1>I am loading</h1>;
+    else {
+      // router.push("/");
+      return null;
+    }
+};
+
+let userDetails={
+
+    email: "",
+    first_name: "",
+    last_name: "",
+    class_status: "student",
+    password: "",
+    password2: "",
+}
+
 export default function Signup() {
+  const router = useRouter();
+  const [errorsMain, setErrorsMain]=useState(userDetails)
+  const [createUser, setCreateUser] = useState(false);
+  const [classStatus, setClassStatus] = useState("student");
+  const [fields, setFields] = useState(userDetails);
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    if (e.target.name === "class_status") {
+      setClassStatus(e.target.value);
+    }
+
+    setFields({
+      ...fields,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    setCreateUser(true);
+    setErrorsMain(errors)
+  };
+
   return (
     <div className="flex justify-center mt-10 mb-20 p-5">
       <form className="w-full max-w-lg">
@@ -13,9 +126,12 @@ export default function Signup() {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               id="first_name"
+              name="first_name"
               type="text"
               placeholder="First Name"
+              onChange={handleChange}
             />
+            <p>{errorsMain.first_name}</p>
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label
@@ -27,10 +143,13 @@ export default function Signup() {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               id="last_name"
+              name="last_name"
               type="text"
               placeholder="Last Name"
+              onChange={handleChange}
             />
           </div>
+          <div>{errors.last_name}</div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
@@ -43,29 +162,35 @@ export default function Signup() {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               id="email"
+              name="email"
               type="text"
               placeholder="Email"
+              onChange={handleChange}
             />
           </div>
+          <div>{errors.email}</div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-2">
           <div className="w-full px-3">
             <label
               className="block text-cyan-600 text-sm font-bold mb-2"
-              htmlFor="state"
+              htmlFor="class_status"
             >
               Class Status
             </label>
             <div className="relative">
               <select
+                value={classStatus}
+                onChange={(event) => handleChange(event)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                id="state"
+                id="class_status"
+                name="class_status"
               >
-                <option>student</option>
-                <option>faculty/staff</option>
-                <option>alumni</option>
-                <option>parents</option>
-                <option>others</option>
+                <option value="student">student</option>
+                <option value="faculty/staff">faculty/staff</option>
+                <option value="alumni">alumni</option>
+                <option value="parents">parents</option>
+                <option value="others">others</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-cyan-600">
                 <svg
@@ -78,32 +203,59 @@ export default function Signup() {
               </div>
             </div>
           </div>
+
+          <div>{errors.class_status}</div>
         </div>
 
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <label
               className="block text-cyan-600 text-sm font-bold mb-2"
-              htmlFor="grid-password"
+              htmlFor="password"
             >
               Password
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-              id="grid-password"
+              id="password"
+              name="password"
               type="password"
+              placeholder="******************"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>{errors.password}</div>
+        </div>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full px-3">
+            <label
+              className="block text-cyan-600 text-sm font-bold mb-2"
+              htmlFor="password2"
+            >
+              Re-Enter Password
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+              id="password2"
+              name="password2"
+              type="password"
+              onChange={handleChange}
               placeholder="******************"
             />
           </div>
+          <div>{errors.password2}</div>
         </div>
         <div className="flex flex-wrap justify-center mt-2">
           <button
             className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
+            onClick={handleSubmit}
           >
             Sign Up
           </button>
         </div>
+        {createUser && <UserSignup fields={fields} />}
       </form>
     </div>
   );

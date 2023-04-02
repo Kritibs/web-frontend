@@ -22,6 +22,27 @@ export function post_fetcher(url: string, content_type: string, data: string) {
   // 		});
   // 	}
   // 	else{
+  if (url == "accounts/") {
+    return fetch(baseURL + url, {
+      method: "POST",
+      headers:
+          {
+              Accept: "application/json",
+              "Content-Type": content_type,
+            },
+      body: data,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("The password and Email do not match");
+        } else {
+          return res.json();
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
   return fetch(baseURL + url, {
     method: "POST",
     headers:
@@ -39,25 +60,19 @@ export function post_fetcher(url: string, content_type: string, data: string) {
               : "",
             Accept: "application/json",
           },
-    // body: JSON.stringify(data),
     body: data,
   })
     .then((res) => {
-		if (!res.ok) {
-            throw new Error("The password and Email do not match");
-        }
-		else{
-		return res.json()
-
-		}
-	}
-		)
+      if (!res.ok) {
+        throw new Error("The password and Email do not match");
+      } else {
+        return res.json();
+      }
+    })
     .catch((error) => {
-
-	  throw error
+      throw error;
     });
 }
-// };
 
 export function patch_fetcher(
   url: string,
