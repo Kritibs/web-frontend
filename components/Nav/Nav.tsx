@@ -1,15 +1,25 @@
 import { Menu, Transition } from "@headlessui/react";
-import Image from "next/image"
-import Link from 'next/link'
-
-const links = [
-  { href: "/shop", label: "Shop" },
-  { href: "/sell", label: "Sell" },
-  { href: "/login", label: "Login" },
-  { href: "/signup", label: "Sign Up" },
-];
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Nav() {
+  const [token, setToken] = useState<string>("");
+  useEffect(() => setToken(localStorage.getItem("access_token")), []);
+  if (token !== "") {
+    var links = [
+      { href: "/shop", label: "Shop" },
+      { href: "/sell", label: "Sell" },
+      { href: "/logout", label: "Logout" },
+    ];
+  } else {
+    links = [
+      { href: "/shop", label: "Shop" },
+      { href: "/sell", label: "Sell" },
+      { href: "/login", label: "Login" },
+      { href: "/signup", label: "Sign Up" },
+    ];
+  }
   return (
     <div className="flex items-center justify-between p-4">
       <div className="flex items-center justify-start grow flex-1">
@@ -17,13 +27,12 @@ export default function Nav() {
       </div>
 
       <div className="flex items-center justify-end grow flex-1">
-		<div className="sm:block hidden">
-		<InlineMenu/>
-		</div>
-		<div className="sm:hidden block z-10">
-
-        <HamMenu />
-		</div>
+        <div className="sm:block hidden">
+          <InlineMenu links={links} />
+        </div>
+        <div className="sm:hidden block z-10">
+          <HamMenu links={links} />
+        </div>
       </div>
     </div>
   );
@@ -42,26 +51,30 @@ function Logo() {
     />
   );
 }
-
-function InlineMenu(){
-	return(
-		<nav className="flex flex-row items-center justify-between">
-    <div className="text-lg lg:flex-grow">
-                  {links.map((link) => {
-                    return (
-
-      <div key={link.href} className=" mt-4 inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-<Link href={link.href}>{link.label}</Link>
-		
+interface LinksName {
+  href: string;
+  label: string;
+}
+function InlineMenu({ links }: { links: LinksName[] }) {
+  return (
+    <nav className="flex flex-row items-center justify-between">
+      <div className="text-lg lg:flex-grow">
+        {links.map((link) => {
+          return (
+            <div
+              key={link.href}
+              className=" mt-4 inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+            >
+              <Link href={link.href}>{link.label}</Link>
+            </div>
+          );
+        })}
       </div>
-                    );
-                  })}
-    </div>
-</nav>
-	)
+    </nav>
+  );
 }
 
-function HamMenu() {
+function HamMenu({ links }: { links: LinksName[] }) {
   return (
     <div className="relative inline-block text-left">
       <Menu>
