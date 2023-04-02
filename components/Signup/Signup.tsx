@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { post_fetcher } from "../../fetch/";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -11,7 +11,7 @@ interface User {
   password: string;
   password2: string;
 }
-const UserSignup = ({ fields }: { fields: User }) => {
+const UserSignup = ({ fields, createUser }: { fields: User, createUser:boolean }) => {
   const router = useRouter();
   console.log(fields);
   const { data, error } = useSWR(
@@ -19,11 +19,15 @@ const UserSignup = ({ fields }: { fields: User }) => {
     ([url, content_type, data]) => post_fetcher(url, content_type, data)
   );
 
-  if (error)
+  if (error){
     return <p className="mt-5 text-red-500">Signup Error: Please try again.</p>;
-  // else if (!data) return <h1>I am loading</h1>;
+
+  }
   else {
+    if(createUser){
     router.push("/");
+
+    }
     return null;
   }
 };
@@ -47,9 +51,9 @@ var initializeErrors = {
 };
 
 export default function Signup() {
-  const router = useRouter();
   const [errors, setErrors] = useState(initializeErrors);
   const [createUser, setCreateUser] = useState(false);
+  const [submit, setSubmit] = useState(false);
   const [classStatus, setClassStatus] = useState("student");
   const [fields, setFields] = useState(userDetails);
   const handleChange = (
@@ -71,9 +75,10 @@ export default function Signup() {
     event.preventDefault();
     var [bool, e] = validation();
 
-    setCreateUser(true);
-    setErrors(e);
+  setCreateUser(bool);
+  setSubmit(true);
 
+    setErrors(e);
   };
 
   const validation = () => {
@@ -115,7 +120,6 @@ export default function Signup() {
     return [isValid, errors] as const;
   };
 
-  console.log(errors);
 
   return (
     <div className="flex justify-center mt-10 mb-20 p-5">
@@ -272,7 +276,7 @@ export default function Signup() {
             Sign Up
           </button>
         </div>
-        {createUser && <UserSignup fields={fields} />}
+       {submit &&  <UserSignup fields={fields} createUser={createUser} />}
       </form>
     </div>
   );
