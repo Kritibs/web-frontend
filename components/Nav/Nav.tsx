@@ -20,13 +20,12 @@ export default function Nav() {
   if (token !== "") {
     var links = [
       { href: "/shop", label: "Shop" },
-      { href: "/sell", label: "Sell" },
+      { href: "/addproducts", label: "Add Products" },
       { href: "/logout", label: "Logout" },
     ];
   } else {
     links = [
       { href: "/shop", label: "Shop" },
-      { href: "/sell", label: "Sell" },
       { href: "/login", label: "Login" },
       { href: "/signup", label: "Sign Up" },
     ];
