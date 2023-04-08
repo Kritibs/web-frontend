@@ -77,7 +77,6 @@ export default function AddProducts() {
 
     if (e.target.name == "product_picture") {
       const file = e.currentTarget as HTMLInputElement;
-      console.log(file.files?.item(0)?.name);
 
       setFields({
         ...fields,
