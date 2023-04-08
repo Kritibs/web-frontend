@@ -1,70 +1,35 @@
 const baseURL = process.env.NEXT_PUBLIC_baseURL!;
 
-export function post_fetcher(url: string, content_type: string, data: string) {
-  // 	if (url=="login/"){
-  // 	return fetch(baseURL + url, {
-  // 		method: "POST",
-  // 		headers:
-  // 			 content_type!='' ?
-  // 			{"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
-  // 			"Accept": "application/json",
-  // 			"Content-Type": content_type,}:
-  // 			{
-  // 		"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
-  // 			"Accept": "application/json",
-  // 		}
-  // ,
-  // 		body: data,
-  // 	})
-  // 		.then((res) => res.json())
-  // 		.catch((error) => {
-  // 			console.error("Error:", error);
-  // 		});
-  // 	}
-  // 	else{
-  if (url == "accounts/") {
-    return fetch(baseURL + url, {
-      method: "POST",
-      headers:
-          {
-              Accept: "application/json",
-              "Content-Type": content_type,
-            },
-      body: data,
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("The password and Email do not match");
-        } else {
-          return res.json();
-        }
-      })
-      .catch((error) => {
-        throw error;
-      });
+export function post_fetcher(
+  url: string,
+  content_type: string,
+  data: string | FormData
+) {
+  const myHeaders = new Headers();
+  {
+    localStorage.getItem("access_token")
+      ? myHeaders.append(
+          "Authorization",
+          "JWT " + localStorage.getItem("access_token")
+        )
+      : myHeaders;
   }
+  myHeaders.append("Accept", "application/json");
+
+  {
+    content_type != ""
+      ? myHeaders.append("Content-Type", content_type)
+      : myHeaders;
+  }
+
   return fetch(baseURL + url, {
     method: "POST",
-    headers:
-      content_type != ""
-        ? {
-            Authorization: localStorage.getItem("access_token")
-              ? "JWT " + localStorage.getItem("access_token")
-              : "",
-            Accept: "application/json",
-            "Content-Type": content_type,
-          }
-        : {
-            Authorization: localStorage.getItem("access_token")
-              ? "JWT " + localStorage.getItem("access_token")
-              : "",
-            Accept: "application/json",
-          },
+    headers: myHeaders,
     body: data,
   })
     .then((res) => {
       if (!res.ok) {
-        throw new Error("The password and Email do not match");
+        throw new Error("An Error occured");
       } else {
         return res.json();
       }

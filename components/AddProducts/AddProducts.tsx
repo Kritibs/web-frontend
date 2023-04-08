@@ -5,7 +5,7 @@ import useSWR from "swr";
 
 export interface Product {
   product_name: string;
-  product_picture: string;
+  product_picture: File | null;
   product_description: string;
   product_condition: string;
   product_action: string;
@@ -17,33 +17,47 @@ export interface Product {
 const AddProduct = ({ fields }: { fields: Product }) => {
   const router = useRouter();
   console.log(fields);
+  let form_data = new FormData();
+  const formArray: [string, string | number | File | null][] = Object.entries({
+    ...fields,
+  });
+  formArray.forEach(([key, value]) => {
+    if (key == "product_picture") {
+      const img = value as File;
+      form_data.append(key, img, img.name);
+    }
+
+    form_data.append(key, value?.toString() as string);
+  });
   const { data, error } = useSWR(
-    ["products/", "application/json", JSON.stringify(fields)],
+    ["products/", "", form_data],
     ([url, content_type, data]) => post_fetcher(url, content_type, data)
   );
 
   if (error)
-    return <p className="mt-5 text-red-500">Error: Please try again.</p>;
+    return (
+      <p className="mt-5 text-red-500">
+        Error: Please try again {error.toString()}.
+      </p>
+    );
   else {
-    // router.push("/shop");
+    router.push("/shop");
     return null;
   }
 };
 
-
-var productDetails ={
-  product_name: '',
-  product_picture: '',
-  product_description: '',
+var productDetails: Product = {
+  product_name: "",
+  product_picture: null,
+  product_description: "",
   product_condition: "NEW",
   product_action: "DONATE",
   product_price: 0,
-  product_date: '',
+  product_date: "",
   product_author: 1,
-}
+};
 
 export default function AddProducts() {
-
   const [createProduct, setCreateProduct] = useState(false);
   const [productCondition, setProductCondition] = useState("NEW");
   const [productAction, setProductAction] = useState("DONATE");
@@ -60,27 +74,34 @@ export default function AddProducts() {
     if (e.target.name === "product_action") {
       setProductAction(e.target.value);
     }
-    console.log(e.target.name, e.target.value)
 
-    if (e.target.name=="product_picture"){
+    if (e.target.name == "product_picture") {
+      const file = e.currentTarget as HTMLInputElement;
+      console.log(file.files?.item(0)?.name);
+
       setFields({
         ...fields,
-        // [e.target.name]: e?.target?.files?[0],
+        [e.target.name]: file.files?.item(0) as File,
       });
-      }
-        else{
-    setFields({
-      ...fields,
-      [e.target.name]: e.target.value,
-    });
-  }
+    } else {
+      setFields({
+        ...fields,
+        [e.target.name]: e.target.value,
+      });
+    }
+
+    console.log(fields);
   };
 
   const handleSubmit = async (event: React.MouseEvent) => {
     event.preventDefault();
-
     setCreateProduct(true);
+
+    setTimeout(() => {
+      setCreateProduct(false);
+    }, 100);
   };
+
   return (
     <div className="mb-20 p-5">
       <form>
@@ -103,9 +124,9 @@ export default function AddProducts() {
                       aria-hidden="true"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
                     <div className="mt-4 flex text-sm leading-6 text-gray-600">
@@ -116,9 +137,10 @@ export default function AddProducts() {
                         <span>Upload a file</span>
                         <input
                           id="file"
-                          name="file"
+                          name="product_picture"
                           type="file"
                           className="sr-only"
+                          onChange={handleChange}
                         />
                       </label>
                       <p className="pl-1">or drag and drop</p>
@@ -143,11 +165,11 @@ export default function AddProducts() {
                 </label>
                 <div className="mt-2">
                   <input
-                    type="text"
+                    type="number"
                     name="product_author"
                     id="product_author"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  onChange={handleChange}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -165,7 +187,7 @@ export default function AddProducts() {
                     name="product_name"
                     id="product_name"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  onChange={handleChange}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -182,7 +204,7 @@ export default function AddProducts() {
                     type="number"
                     name="product_price"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  onChange={handleChange}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -197,7 +219,7 @@ export default function AddProducts() {
                   <textarea
                     name="product_description"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  onChange={handleChange}
+                    onChange={handleChange}
                   ></textarea>
                 </div>
               </div>
@@ -235,7 +257,7 @@ export default function AddProducts() {
             </label>
             <div className="mt-2">
               <select
-                  value={productAction}
+                value={productAction}
                 onChange={(event) => handleChange(event)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 id="product_action"
@@ -260,7 +282,7 @@ export default function AddProducts() {
                 name="product_date"
                 id="product_date"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -275,7 +297,6 @@ export default function AddProducts() {
             Submit
           </button>
         </div>
-
         {createProduct && <AddProduct fields={fields} />}
       </form>
     </div>
