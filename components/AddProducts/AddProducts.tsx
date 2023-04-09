@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { post_fetcher } from "../../fetch/";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import { useSession } from "next-auth/react";
 
 export interface Product {
   product_name: string;
@@ -13,38 +13,6 @@ export interface Product {
   product_date: string;
   product_author: number;
 }
-
-const AddProduct = ({ fields }: { fields: Product }) => {
-  const router = useRouter();
-  console.log(fields);
-  let form_data = new FormData();
-  const formArray: [string, string | number | File | null][] = Object.entries({
-    ...fields,
-  });
-  formArray.forEach(([key, value]) => {
-    if (key == "product_picture") {
-      const img = value as File;
-      form_data.append(key, img, img.name);
-    }
-
-    form_data.append(key, value?.toString() as string);
-  });
-  const { data, error } = useSWR(
-    ["products/", "", form_data],
-    ([url, content_type, data]) => post_fetcher(url, content_type, data)
-  );
-
-  if (error)
-    return (
-      <p className="mt-5 text-red-500">
-        Error: Please try again {error.toString()}.
-      </p>
-    );
-  else {
-    router.push("/shop");
-    return null;
-  }
-};
 
 var productDetails: Product = {
   product_name: "",
@@ -58,7 +26,8 @@ var productDetails: Product = {
 };
 
 export default function AddProducts() {
-  const [createProduct, setCreateProduct] = useState(false);
+  const { data: session, status } = useSession();
+  const [error, setError] = useState("");
   const [productCondition, setProductCondition] = useState("NEW");
   const [productAction, setProductAction] = useState("DONATE");
   const [fields, setFields] = useState(productDetails);
@@ -92,13 +61,32 @@ export default function AddProducts() {
     console.log(fields);
   };
 
-  const handleSubmit = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    setCreateProduct(true);
+  const router = useRouter();
 
-    setTimeout(() => {
-      setCreateProduct(false);
-    }, 100);
+  const handleSubmit = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    let form_data = new FormData();
+    const formArray: [string, string | number | File | null][] = Object.entries(
+      {
+        ...fields,
+      }
+    );
+    formArray.forEach(([key, value]) => {
+      if (key == "product_picture") {
+        const img = value as File;
+        form_data.append(key, img, img.name);
+      }
+
+      form_data.append(key, value?.toString() as string);
+    });
+    try {
+      const result = await post_fetcher("products/", "", form_data, session);
+      router.push("/shop");
+    } catch (e: any) {
+      setError(e.message.toString());
+    }
   };
 
   return (
@@ -296,7 +284,7 @@ export default function AddProducts() {
             Submit
           </button>
         </div>
-        {createProduct && <AddProduct fields={fields} />}
+        <div className="mt-10 text-red-500">{error}</div>
       </form>
     </div>
   );

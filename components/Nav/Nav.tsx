@@ -1,29 +1,22 @@
 import { Menu, Transition } from "@headlessui/react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "@/context";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Nav() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const logout = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: "/login" });
+    router.push(data.url);
+  };
 
-  const userInfo = useContext(UserContext);
-  const [token, setToken] = useState<string|null>();
-  useEffect(() => {
-    if (localStorage.getItem("access_token")!==null){
-    setToken(localStorage.getItem("access_token"))
-    }
-    else{
-
-    setToken('')
-    }
-
-  },
-  []
-    );
-  if (token !== "") {
+  if (status === "authenticated") {
     var links = [
       { href: "/shop", label: "Shop" },
       { href: "/addproducts", label: "Add Products" },
+      { href: "/user-profile", label: "User Profile" },
       { href: "/logout", label: "Logout" },
     ];
   } else {
@@ -37,17 +30,16 @@ export default function Nav() {
     <div className="flex items-center justify-between p-4">
       <div className="flex items-center justify-start grow flex-1">
         <Link href="/">
-
-        <Logo />
+          <Logo />
         </Link>
       </div>
 
       <div className="flex items-center justify-end grow flex-1">
         <div className="sm:block hidden">
-          <InlineMenu links={links} />
+          <InlineMenu links={links} logout={logout} />
         </div>
         <div className="sm:hidden block z-10">
-          <HamMenu links={links} />
+          <HamMenu links={links} logout={logout} />
         </div>
       </div>
     </div>
@@ -71,7 +63,7 @@ interface LinksName {
   href: string;
   label: string;
 }
-function InlineMenu({ links }: { links: LinksName[] }) {
+function InlineMenu({ links, logout }: { links: LinksName[]; logout: any }) {
   return (
     <nav className="flex flex-row items-center justify-between">
       <div className="text-lg lg:flex-grow">
@@ -81,7 +73,13 @@ function InlineMenu({ links }: { links: LinksName[] }) {
               key={link.href}
               className=" mt-4 inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
             >
-              <Link href={link.href}>{link.label}</Link>
+              {link.label === "Logout" ? (
+                <button className="" type="button" onClick={logout}>
+                  Logout
+                </button>
+              ) : (
+                <Link href={link.href}>{link.label}</Link>
+              )}
             </div>
           );
         })}
@@ -90,7 +88,7 @@ function InlineMenu({ links }: { links: LinksName[] }) {
   );
 }
 
-function HamMenu({ links }: { links: LinksName[] }) {
+function HamMenu({ links, logout }: { links: LinksName[]; logout: any }) {
   return (
     <div className="relative inline-block text-left">
       <Menu>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { post_fetcher } from "../../fetch/";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 
 interface User {
   first_name: string;
@@ -11,26 +10,6 @@ interface User {
   password: string;
   password2: string;
 }
-const UserSignup = ({ fields, createUser }: { fields: User, createUser:boolean }) => {
-  const router = useRouter();
-  console.log(fields);
-  const { data, error } = useSWR(
-    ["accounts/", "application/json", JSON.stringify(fields)],
-    ([url, content_type, data]) => post_fetcher(url, content_type, data)
-  );
-
-  if (error){
-    return <p className="mt-5 text-red-500">Signup Error: Please try again.</p>;
-
-  }
-  else {
-    if(createUser){
-    router.push("/");
-
-    }
-    return null;
-  }
-};
 
 let userDetails = {
   email: "",
@@ -52,10 +31,10 @@ var initializeErrors = {
 
 export default function Signup() {
   const [errors, setErrors] = useState(initializeErrors);
-  const [createUser, setCreateUser] = useState(false);
-  const [submit, setSubmit] = useState(false);
   const [classStatus, setClassStatus] = useState("student");
   const [fields, setFields] = useState(userDetails);
+
+  const router = useRouter();
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -71,38 +50,31 @@ export default function Signup() {
     });
   };
 
-  const handleSubmit = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    var [bool, e] = validation();
-
-  setCreateUser(bool);
-  setSubmit(true);
-
-    setErrors(e);
-  };
-
   const validation = () => {
     let errors = initializeErrors;
     let activeItem = fields;
     let isValid = true;
+    console.log("here");
 
-    if (!activeItem["email"]) {
+    if (activeItem["email"] === "") {
+      console.log("ayo");
+
       isValid = false;
       errors["email"] = "Please enter your email address.";
     }
-    if (!activeItem["first_name"]) {
+    if (activeItem["first_name"] === "") {
       isValid = false;
       errors["first_name"] = "Please enter your first name.";
     }
-    if (!activeItem["last_name"]) {
+    if (activeItem["last_name"] === "") {
       isValid = false;
       errors["last_name"] = "Please enter your last name.";
     }
-    if (!activeItem["class_status"]) {
+    if (activeItem["class_status"] === "") {
       isValid = false;
       errors["class_status"] = "Please enter your class status.";
     }
-    if (!activeItem["password"]) {
+    if (activeItem["password"] === "") {
       isValid = false;
       errors["password"] = "Please enter your password.";
     }
@@ -116,10 +88,27 @@ export default function Signup() {
         errors["password2"] = "Passwords don't match.";
       }
     }
+    setErrors(errors);
+    // return isValid;
 
     return [isValid, errors] as const;
   };
 
+  const handleSubmit = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const [bool, e] = validation();
+    if (bool) {
+      const result = await post_fetcher(
+        "accounts/",
+        "application/json",
+        JSON.stringify(fields),
+        ""
+      );
+      router.push("/login");
+    }
+  };
 
   return (
     <div className="flex justify-center mt-10 mb-20 p-5">
@@ -276,7 +265,6 @@ export default function Signup() {
             Sign Up
           </button>
         </div>
-       {submit &&  <UserSignup fields={fields} createUser={createUser} />}
       </form>
     </div>
   );

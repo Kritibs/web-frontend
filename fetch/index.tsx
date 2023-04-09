@@ -1,18 +1,19 @@
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+
 const baseURL = process.env.NEXT_PUBLIC_baseURL!;
+
 
 export function post_fetcher(
   url: string,
   content_type: string,
-  data: string | FormData
+  data: string | FormData,
+  session:any
 ) {
+// const { data: session, status } = useSession();
   const myHeaders = new Headers();
-  {
-    localStorage.getItem("access_token")
-      ? myHeaders.append(
-          "Authorization",
-          "JWT " + localStorage.getItem("access_token")
-        )
-      : myHeaders;
+  if (session) {
+    myHeaders.append("Authorization", "JWT " + session.user?.access);
   }
   myHeaders.append("Accept", "application/json");
 
@@ -45,13 +46,17 @@ export function patch_fetcher(
   content_type: string,
   data: string
 ) {
+const { data: session, status } = useSession();
+  const myHeaders = new Headers();
+  if (session) {
+    myHeaders.append("Authorization", "JWT " + session.user?.access);
+  }
+  myHeaders.append("Content-Type", content_type);
   return fetch(baseURL + url, {
     method: request_method,
     // body: JSON.stringify(data),
     body: data,
-    headers: {
-      "Content-Type": content_type,
-    },
+    headers: myHeaders,
   })
     .then((res) => res.json())
     .catch((error) => {
@@ -70,20 +75,31 @@ export function get_fetcher(url: string) {
     });
 }
 
-export function del_fetcher(url: string) {
-  const headers_data = {
-    Authorization: localStorage.getItem("access_token")
-      ? "JWT " + localStorage.getItem("access_token")
-      : "",
-    Accept: "application/json",
-  };
-  let headers = new Headers(headers_data);
+export function del_fetcher(url: string, session:any) {
+  const myHeaders = new Headers();
+  if (session) {
+    myHeaders.append("Authorization", "JWT " + session.user?.access);
+  }
   return fetch(baseURL + url, {
     method: "DELETE",
-    headers: headers,
+    headers: myHeaders,
   })
     .then((res) => res.json())
     .catch((error) => {
       console.error("Error:", error);
     });
 }
+
+// export const fetchAll = (url:string, content_type:string, body:any)=>{
+
+//   const { data, error } = useSWR([url, content_type, body],
+//     ([url, content_type, data]) => post_fetcher(url, content_type, data)
+
+//   );
+//   if (error){
+
+//   return ["error",error]
+//   }
+//   return ["data",data]
+
+// }
