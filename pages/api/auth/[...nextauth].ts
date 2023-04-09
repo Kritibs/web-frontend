@@ -26,7 +26,7 @@ const authOptions: NextAuthOptions = {
           body: JSON.stringify({ email: email, password: password })
         })
         const user = await loginRes.json()
-        console.log(user)
+        // console.log(user)
         if (loginRes.ok && user) {
           return user
         }
@@ -37,7 +37,24 @@ const authOptions: NextAuthOptions = {
 
     })
 
-  ]
+  ],
+
+  callbacks: {
+    jwt: async ({ token, user }) => {
+        user && (token.user = user)
+        token.user.accessToken=token.user['access']
+        // console.log(token.user["access"])
+        return token
+    },
+    session: async ({ session, token, user }) => {
+        session.user = token.user!
+        // console.log(session.user)
+        // console.log(token.user['access'])
+        // console.log(session.user['access'])
+        // return session
+        return Promise.resolve(session)
+    },
+}
 }
 
 export default NextAuth(authOptions);

@@ -4,6 +4,19 @@ import Link from "next/link";
 import useSWR from "swr";
 import { get_fetcher } from "../../fetch/";
 
+export interface Product {
+  id: number;
+  product_name: string;
+  product_picture: string;
+  product_description: string;
+  product_condition: string;
+  product_action: string;
+  product_price: number;
+  product_date: string;
+  product_author: number;
+}
+
+
 export default function Shop() {
   const { data, error } = useSWR("products/", get_fetcher);
   if (!data) return <h1>I am loading</h1>
@@ -12,7 +25,7 @@ export default function Shop() {
     return (
       <div className="mt-16 mb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-2 gap-4 sm:gap-2">
-          {data.map((product: any) => {
+          {data.map((product: Product) => {
             return (
               <div key={product.id}>
                 <Link href={`/shop/${product.id}`}>

@@ -55,7 +55,6 @@ const handleLogin = async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
     const res= await signIn('credentials',
       { email: email, password: password, redirect:false}
     )
-    console.log(res)
     if (res?.error){
       console.log(res.error)
   }
