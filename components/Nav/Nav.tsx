@@ -1,9 +1,12 @@
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "@/context";
 
 export default function Nav() {
+
+  const userInfo = useContext(UserContext);
   const [token, setToken] = useState<string|null>();
   useEffect(() => {
     if (localStorage.getItem("access_token")!==null){
@@ -33,7 +36,10 @@ export default function Nav() {
   return (
     <div className="flex items-center justify-between p-4">
       <div className="flex items-center justify-start grow flex-1">
+        <Link href="/">
+
         <Logo />
+        </Link>
       </div>
 
       <div className="flex items-center justify-end grow flex-1">

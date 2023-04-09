@@ -3,11 +3,14 @@ import { useState } from "react";
 import { post_fetcher } from "../../fetch/";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { signIn } from "next-auth/react";
 
 interface User {
   email: string;
   password: string;
 }
+ 
+
 const UserLogin = ({ fields }: { fields: User }) => {
   const router = useRouter();
   const { data, error } = useSWR(
@@ -28,21 +31,40 @@ const UserLogin = ({ fields }: { fields: User }) => {
 
 export default function Login() {
   const [startFetching, setStartFetching] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [fields, setFields] = useState({
     email: "",
     password: "",
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.name==="email"){
+      setEmail(e.target.value)
+    }
+    if(e.target.name==="password"){
+      setPassword(e.target.value)
+    }
     setFields({
       ...fields,
       [e.target.name]: e.target.value,
     });
   };
+const handleLogin = async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  e.preventDefault()
+  console.log(email,password)
+    const res= await signIn('credentials',
+      { email: email, password: password, redirect:false}
+    )
+    console.log(res)
+    if (res?.error){
+      console.log(res.error)
+  }
+    
+  }
   const handleSubmit = async (event: React.MouseEvent) => {
     event.preventDefault();
     setStartFetching(true);
 
-    // const { data, error } = await useSWR(["token/", "application/json", JSON.stringify(fields)], post_fetcher);
   };
   return (
     <div className="flex justify-center mt-10 mb-20">
@@ -85,7 +107,8 @@ export default function Login() {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
-              onClick={handleSubmit}
+              onClick={handleLogin}
+              // onClick={()=>signIn()}
             >
               Sign In
             </button>
@@ -106,7 +129,7 @@ export default function Login() {
             </Link>
           </p>
 
-          {startFetching && <UserLogin fields={fields} />}
+          {/* {startFetching && <UserLogin fields={fields} />} */}
         </form>
       </div>
     </div>
