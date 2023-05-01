@@ -18,7 +18,7 @@ const authOptions: NextAuthOptions = {
           password: string;
         }
 
-        const loginRes = await fetch("http://10.28.164.119:8000/api/token/", {
+        const loginRes = await fetch(process.env.NEXT_PUBLIC_baseURL+"token/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -43,15 +43,10 @@ const authOptions: NextAuthOptions = {
     jwt: async ({ token, user }) => {
         user && (token.user = user)
         token.user.accessToken=token.user['access']
-        // console.log(token.user["access"])
         return token
     },
     session: async ({ session, token, user }) => {
         session.user = token.user!
-        // console.log(session.user)
-        // console.log(token.user['access'])
-        // console.log(session.user['access'])
-        // return session
         return Promise.resolve(session)
     },
 }
