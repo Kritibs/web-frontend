@@ -18,7 +18,7 @@ const authOptions: NextAuthOptions = {
           password: string;
         }
 
-        const loginRes = await fetch(process.env.NEXT_PUBLIC_baseURL+"token/", {
+        const loginRes = await fetch(process.env.NEXT_PUBLIC_baseURL + "token/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -39,17 +39,19 @@ const authOptions: NextAuthOptions = {
 
   ],
 
+  secret: process.env.NEXTAUTH_SECRET,
+
   callbacks: {
     jwt: async ({ token, user }) => {
-        user && (token.user = user)
-        token.user.accessToken=token.user['access']
-        return token
+      user && (token.user = user)
+      token.user.accessToken = token.user['access']
+      return token
     },
     session: async ({ session, token, user }) => {
-        session.user = token.user!
-        return Promise.resolve(session)
+      session.user = token.user!
+      return Promise.resolve(session)
     },
-}
+  }
 }
 
 export default NextAuth(authOptions);
