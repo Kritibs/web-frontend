@@ -7,7 +7,7 @@ import { get_fetcher } from "../../fetch/";
 export interface Product {
   id: number;
   product_name: string;
-  product_picture: string;
+  product_picture: null|File;
   product_description: string;
   product_condition: string;
   product_action: string;

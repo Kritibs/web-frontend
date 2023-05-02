@@ -1,59 +1,75 @@
-import { useState,useEffect } from "react";
-import { patch_fetcher, post_fetcher } from "../../fetch/";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+import { get_fetcher } from "@/fetch";
+import { patch_fetcher, post_fetcher } from "../../fetch/";
 import { useSession } from "next-auth/react";
 import {
   DecodedToken,
   decodedData,
 } from "@/components/UserProfile/UserProfile";
 import jwtDecode from "jwt-decode";
+import { Product } from "../Shop/Shop";
 
-export interface Product {
-  id:number;
-  product_name: string;
-  product_picture: File | null;
-  product_description: string;
-  product_condition: string;
-  product_action: string;
-  product_price: number;
-  product_date: string;
-  product_author: number;
-}
+var productDetail: Product = {
+  id: 0,
+  product_name: "",
+  product_picture: null,
+  product_description: "",
+  product_condition: "NEW",
+  product_action: "DONATE",
+  product_price: 0,
+  product_date: "",
+  product_author: 1,
+};
 
-export default function AddProducts({ product}: { product: Product | null}) {
+export default function AddProducts({edit}:{edit:Boolean}) {
+  const router = useRouter();
+  const [fields, setFields] = useState(productDetail);
+  const [error, setError] = useState("");
+  const [productCondition, setProductCondition] = useState(
+    fields.product_condition
+  );
+  const [productAction, setProductAction] = useState(fields.product_action);
+  const { data: session, status } = useSession();
+  const { data: product, error: product_detail_error } = useSWR(edit?
+    `products/${router.query.id}`:null,
+    get_fetcher
+  );
+
+
+  
 
   var decodedUser: DecodedToken = decodedData;
 
-  console.log(product?.product_action)
-  const { data: session, status } = useSession();
-  var productDetails: Product = {
-    id:product ? product.id : 0,
-    product_name: product ? product.product_name : "",
-    product_picture: null,
-    product_description: product ? product.product_description : "",
-    product_condition: product ? product.product_condition : "NEW",
-    product_action: product ? product.product_action : "DONATE",
-    product_price: product ? product.product_price : 0,
-    product_date: product ? product.product_date : "",
-    product_author: product ? product.product_author :1,
-  };
-  const [fields, setFields] = useState(productDetails);
-  if (session && status=="authenticated") {
+  useEffect(() => {
+    if (status === "authenticated") {
+        setFields((prev) => ({
+          ...prev,
+        ["product_author"]: decodedUser.user_id,
+        }));
+    }
+    if (product) {
+      for (let key in product) {
+        setFields((prev) => ({
+          ...prev,
+          [key]: product[key],
+        }));
+      }
+    }
+  }, [product,decodedUser.user_id,status]);
+
+  if(edit){
+  if (!product) return <h1>I am loading</h1>;
+  if (product_detail_error) return <h1>there is error</h1>;
+
+  }
+
+  if (session && status == "authenticated") {
     const userData = session.user?.access;
     decodedUser = jwtDecode(userData);
   }
-  useEffect(() => {
-    if (status=== "authenticated"){
-      setFields({
-        ...fields,
-        ["product_author"]: decodedUser.user_id,
-      });
-    }
-  }, [status]);
 
-  const [error, setError] = useState("");
-  const [productCondition, setProductCondition] = useState(fields.product_condition);
-  const [productAction, setProductAction] = useState(fields.product_action);
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -84,8 +100,6 @@ export default function AddProducts({ product}: { product: Product | null}) {
     // console.log(fields);
   };
 
-  const router = useRouter();
-
   const handleSubmit = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -105,21 +119,23 @@ export default function AddProducts({ product}: { product: Product | null}) {
       form_data.append(key, value?.toString() as string);
     });
     try {
-    if (product){
-      const result = await patch_fetcher(`products/${product.id}/`, "", form_data, session);
-    }
-    else{
-      const result = await post_fetcher("products/", "", form_data, session);
-    }
-    window.location.href = '/shop'
+      if (product) {
+        const result = await patch_fetcher(
+          `products/${product.id}/`,
+          "",
+          form_data,
+          session
+        );
+      } else {
+        const result = await post_fetcher("products/", "", form_data, session);
+      }
+      window.location.href = "/shop";
       // router.push("/shop");
     } catch (e: any) {
       setError(e.message.toString());
     }
-
   };
-  if (status=="authenticated"){
-
+  if (status == "authenticated") {
     return (
       <div className="mb-20 p-5">
         <form>
@@ -226,7 +242,6 @@ export default function AddProducts({ product}: { product: Product | null}) {
                       name="product_price"
                       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                       onChange={handleChange}
-
                       value={fields.product_price}
                     />
                   </div>
@@ -306,8 +321,7 @@ export default function AddProducts({ product}: { product: Product | null}) {
                   name="product_date"
                   id="product_date"
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 dark:text-gray-300 leading-tight focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-
-                      value={fields.product_date}
+                  value={fields.product_date}
                   onChange={handleChange}
                 />
               </div>
@@ -327,11 +341,7 @@ export default function AddProducts({ product}: { product: Product | null}) {
         </form>
       </div>
     );
-
-  }
-  else{
-    return (
-      <h1> I am loading.</h1>
-    )
+  } else {
+    return <h1> I am loading.</h1>;
   }
 }
