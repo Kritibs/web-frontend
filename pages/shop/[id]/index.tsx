@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { del_fetcher, get_fetcher } from "@/fetch";
 import { ProductCard } from "@/components/Shop/Shop";
 import { useSession } from "next-auth/react";
@@ -8,6 +8,7 @@ import { DecodedToken } from "@/components/UserProfile/UserProfile";
 
 const Post = () => {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   const { data: session, status } = useSession();
   const { id } = router.query;
@@ -22,28 +23,31 @@ const Post = () => {
     decodedData = jwtDecode(session.user?.access);
   }
 
+  const { data, error } = useSWR(`products/${id}`, get_fetcher);
   const DeleteProduct = (event: any) => {
     event.preventDefault();
-  const res = del_fetcher(`products/${id}`, session)
+    const res = del_fetcher(`products/${id}`, session).then(() => {
+      mutate("products/");
 
-    router.push({
-      pathname: "/shop",
+      router.push({
+        pathname: "/shop",
+      });
     });
+    // mutate()
   };
 
   const editProduct = (event: any) => {
     event.preventDefault();
     router.push({
-      pathname: "/add-products",
-      query: { id: id },
+      pathname: `/shop/${id}/edit`,
+      // query: { id: id },
     });
   };
 
-  const { data, error } = useSWR(`products/${id}`, get_fetcher);
   if (!data) return <h1>I am loading</h1>;
   else if (error) return <h1>there is error</h1>;
   else {
-    if (decodedData.user_id==data.product_author){
+    if (decodedData.user_id == data.product_author) {
       return (
         <>
           <div className="mt-16 mb-20">
@@ -55,9 +59,7 @@ const Post = () => {
           </div>
         </>
       );
-
-    }
-    else{
+    } else {
       return (
         <>
           <div className="mt-16 mb-20">
@@ -65,7 +67,6 @@ const Post = () => {
           </div>
         </>
       );
-
     }
   }
 };

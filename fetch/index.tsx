@@ -42,21 +42,20 @@ export function post_fetcher(
 
 export function patch_fetcher(
   url: string,
-  request_method: string,
   content_type: string,
-  data: string
+  data: string | FormData,
+  session:any
 ) {
-const { data: session, status } = useSession();
   const myHeaders = new Headers();
   if (session) {
     myHeaders.append("Authorization", "JWT " + session.user?.access);
   }
-  myHeaders.append("Content-Type", content_type);
+  // myHeaders.append("Content-Type", content_type);
   return fetch(baseURL + url, {
-    method: request_method,
+    method: "PATCH",
+    headers:myHeaders,
     // body: JSON.stringify(data),
     body: data,
-    headers: myHeaders,
   })
     .then((res) => res.json())
     .catch((error) => {
@@ -84,7 +83,6 @@ export function del_fetcher(url: string, session:any) {
     method: "DELETE",
     headers: myHeaders,
   })
-    .then((res) => res.json())
     .catch((error) => {
       console.error("Error:", error);
     });

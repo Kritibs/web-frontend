@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { get_fetcher } from "../../fetch/";
 import jwtDecode from "jwt-decode";
@@ -13,6 +12,15 @@ export interface DecodedToken {
   token_type: string;
   user_id: number;
 }
+
+ export var decodedData: DecodedToken = {
+    exp: 0,
+    iat: 0,
+    jti: "",
+    token_type: "",
+    user_id: 0,
+  };
+
 export default function UserProfile() {
   const { data: session, status } = useSession();
 
@@ -20,13 +28,6 @@ export default function UserProfile() {
     "products/",
     get_fetcher
   );
-  var decodedData: DecodedToken = {
-    exp: 0,
-    iat: 0,
-    jti: "",
-    token_type: "",
-    user_id: 0,
-  };
   if (session) {
     const userData = session.user?.access;
     decodedData = jwtDecode(userData);
