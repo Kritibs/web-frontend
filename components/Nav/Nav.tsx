@@ -35,10 +35,10 @@ export default function Nav() {
       </div>
 
       <div className="flex items-center justify-end grow flex-1">
-        <div className="sm:block hidden">
+        <div className="md:block hidden">
           <InlineMenu links={links} logout={logout} />
         </div>
-        <div className="sm:hidden block z-10">
+        <div className="md:hidden block z-10">
           <HamMenu links={links} logout={logout} />
         </div>
       </div>
@@ -50,7 +50,7 @@ function Logo() {
   return (
     <Image
       className="object-contain rounded-full"
-      src="/logo.jpg"
+      src="/WebLogo.png"
       alt="logo of Luther Marketplace"
       width={75}
       priority={true}
