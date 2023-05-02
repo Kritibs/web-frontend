@@ -22,7 +22,7 @@ export default function Privacy() {
         <br></br>
         For the purposes of this Privacy Policy: Account means a unique account
         created for You to access our Service or parts of our Service. Company
-        (referred to as either "the Company", "We", "Us" or "Our" in this
+        (referred to as either the Company, We, Us or Our in this
         Agreement) refers to Luther Marketplace. Cookies are small files that
         are placed on Your computer, mobile device or any other device by a
         website, containing the details of Your browsing history on that website
@@ -51,7 +51,7 @@ export default function Privacy() {
         identify You. Personally identifiable information minimally include
         email, your name and last name. Usage Data is collected automatically
         when using the Service. Usage Data may include information such as Your
-        Device's Internet Protocol address (e.g. IP address), browser type,
+        Devices Internet Protocol address (e.g. IP address), browser type,
         browser version, the pages of our Service that You visit, the time and
         date of Your visit, the time spent on those pages, unique device
         identifiers and other diagnostic data. When You access the Service by or
@@ -78,7 +78,7 @@ export default function Privacy() {
         for example, to count users who have visited those pages or opened an
         email and for other related website statistics (for example, recording
         the popularity of a certain section and verifying system and server
-        integrity). Cookies can be "Persistent" or "Session" Cookies. Persistent
+        integrity). Cookies can be Persistent or Session Cookies. Persistent
         Cookies remain on Your personal computer or mobile device when You go
         offline, while Session Cookies are deleted as soon as You close Your web
         browser. Learn more about cookies on the Privacy Policies website
@@ -117,7 +117,7 @@ export default function Privacy() {
         data is used to strengthen the security or to improve the functionality
         of Our Service, or We are legally obligated to retain this data for
         longer time periods. Your information, including Personal Data, is
-        processed at the Company's operating offices and in any other places
+        processed at the Companys operating offices and in any other places
         where the parties involved in the processing are located. It means that
         this information may be transferred to — and maintained on — computers
         located outside of Your state, province, country or other governmental
@@ -155,17 +155,17 @@ export default function Privacy() {
         13 without verification of parental consent, We take steps to remove
         that information from Our servers. If We need to rely on consent as a
         legal basis for processing Your information and Your country requires
-        consent from a parent, We may require Your parent's consent before We
+        consent from a parent, We may require Your parents consent before We
         collect and use that information. Our Service may contain links to other
         websites that are not operated by Us. If You click on a third party
-        link, You will be directed to that third party's site. We strongly
+        link, You will be directed to that third partys site. We strongly
         advise You to review the Privacy Policy of every site You visit. We have
         no control over and assume no responsibility for the content, privacy
         policies or practices of any third party sites or services. We may
         update Our Privacy Policy from time to time. We will notify You of any
         changes by posting the new Privacy Policy on this page. We will let You
         know via email and/or a prominent notice on Our Service, prior to the
-        change becoming effective and update the "Last updated" date at the top
+        change becoming effective and update the Last updated date at the top
         of this Privacy Policy. You are advised to review this Privacy Policy
         periodically for any changes. Changes to this Privacy Policy are
         effective when they are posted on this page.

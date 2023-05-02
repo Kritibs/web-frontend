@@ -2,14 +2,14 @@ export default function Terms() {
   return (
     <div>
       <h1>Terms of Use</h1>
-      <h3 className="">Last updated: December 6, 2022</h3>
-      <h2 className="">
+      <h3 className=''>Last updated: December 6, 2022</h3>
+      <h2 className=''>
         1. AGREEMENT TO TERMS These Terms of Use constitute a legally binding
         agreement made between you, whether personally or on behalf of an entity
-        ("you") and ("Company." "we." "us," or "our"), concerning your access to
+        (you) and (Company. we. us, or our), concerning your access to
         and use of the website as well as any other media form, media channel,
         mobile website or mobile application related, linked, or otherwise
-        connected thereto (collectively, the "Site"). You agree that by
+        connected thereto (collectively, the Site). You agree that by
         accessing the Site, you have read, understood, and agreed to be bound by
         all of these Terms of Use. IF YOU DO NOT AGREE WITH ALL OF THESE TERMS
         OF USE, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND YOU
@@ -19,7 +19,7 @@ export default function Terms() {
         Site from time to time are hereby expressly incorporated herein by
         reference. We reserve the right, in our sole discretion, to make changes
         or modifications to these Terms of Use at any time and for any reason.
-        We will alert you about any changes by updating the "Last updated" date
+        We will alert you about any changes by updating the Last updated date
         of these Terms of Use, and you waive any right to receive specific
         notice of each such change. Please ensure that you check the applicable
         Terms every time you use our Site so that you understand which Terms

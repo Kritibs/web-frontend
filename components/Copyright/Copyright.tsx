@@ -7,15 +7,15 @@ export default function Copyright() {
         Unless otherwise indicated, Luther Marketplace is our proprietary
         property and all source code, databases, functionality, software,
         website designs, audio, video, text, photographs, and graphics on the
-        Site (collectively, the "Content") and the trademarks, service marks,
-        and logos contained therein (the "Marks) are owned or controlled by us
+        Site (collectively, the Content) and the trademarks, service marks,
+        and logos contained therein (the Marks) are owned or controlled by us
         or licensed to us, and are protected by copyright and trademark laws and
         various other intellectual property rights and unfair competition laws
         of the United States, international copyright laws, and international
         conventions.
         <br></br>
         <br></br>
-        The Content and the Marks are provided on Luther Marketplace "AS IS" for
+        The Content and the Marks are provided on Luther Marketplace AS IS for
         your information and personal use only. Except as expressly provided in
         this Copyright Notice, no part of the Site and no Content or Marks may
         be copied, reproduced, aggregated, republished, uploaded, posted,
