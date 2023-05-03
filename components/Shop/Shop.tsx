@@ -1,52 +1,73 @@
-import styles from "./Shop.module.css"
-import Image from 'next/image'
-// import Link from 'next/link'
-// import { useRouter } from 'next/router'
-// import useSWR from 'swr';
-// import {fetcher} from "../../fetch/";
+import styles from "./Shop.module.css";
+import Image from "next/image";
+import Link from "next/link";
+import useSWR from "swr";
+import { get_fetcher } from "../../fetch/";
+
+export interface Product {
+  id: number;
+  product_name: string;
+  product_picture: null|File;
+  product_description: string;
+  product_condition: string;
+  product_action: string;
+  product_price: number;
+  product_date: string;
+  product_author: number;
+}
+
 
 export default function Shop() {
+  const { data, error } = useSWR("products/", get_fetcher);
+  if (!data) return <h1>I am loading</h1>
+  else if (error) return <h1>there is error</h1>
+  else {
+    return (
+      <div className="mt-16 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-2 gap-4 sm:gap-2">
+          {data.map((product: Product) => {
+            return (
+              <div key={product.id}>
+                <Link href={`/shop/${product.id}`}>
+                  <ProductCard product={product} />
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+}
 
+export function ProductCard({ product }: { product: any }) {
   return (
-    <>
-      <div className={styles.headerimagecontainer}>
-        <div className={styles.textheader}>
-          <h1 className={styles.parentheadtext}>Find out what the <br></br>community is selling</h1>
-          <br></br>
-          <h3 className={styles.subheadtext}>Your friends and professors trust Luther Marketplace everyday. <br></br> 
-          Explore and get the goods you need for cheap.</h3>         
+    <div className={styles.productgrid}>
+      <div className={styles.productcard} /* key={product.id} */>
+        <Image
+          className={styles.productimage}
+          src={product.product_picture}
+          width={500}
+          height={500}
+          alt="Search bar picture"
+        />
+        <div className={styles.productcontent}>
+          <div>
+            <div className={styles.productdetails}>
+              <span>{product.product_name}</span>
+            </div>
+            <div className={styles.productcondition}>
+              <p className={styles.productconditiontext}>
+                {product.product_condition}
+              </p>
+            </div>
+            <div className={`${styles.productbio} text-ellipsis truncate w-64`}>
+              {product.product_description}
+            </div>
+          </div>
+          <div className={styles.productprice}>${product.product_price}</div>
         </div>
-        <div className={styles.searchbar}>
-          <form method="get" action="">
-            <input className={styles.searchfield} type="text" placeholder="Search" required></input>
-          </form>
-        </div>
-			</div>
-
-		<div className={styles.productgrid}>
-			<div className={styles.productcard} /* key={product.id} */>
-				{/* <Image className={styles.productimage}
-				 src="https://images.pexels.com/photos/7303738/pexels-photo-7303738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-				 width={500} height={500} alt="Search bar picture"
-				 />	 */}
-				<div className={styles.productcontent}>
-					<div>
-						<div className={styles.productdetails}>
-							<span>Product Name</span>									
-						</div>
-						<div className = {styles.productcondition}>
-							<p className = {styles.productconditiontext}>Used New</p>
-						</div>	
-						<div className={styles.productbio}>
-							The detailed bio of the product goes here. The detailed bio of the product goes here. The detailed bio of the product goes here.
-						</div>
-					</div>
-					<div className={styles.productprice}>
-						$100.00
-					</div>
-				</div>
-			</div>
-		</div>
-    </>
+      </div>
+    </div>
   );
 }

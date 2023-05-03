@@ -1,29 +1,46 @@
 import { Menu, Transition } from "@headlessui/react";
-import Image from "next/image"
-import Link from 'next/link'
-
-const links = [
-  { href: "/shop", label: "Shop" },
-  { href: "/sell", label: "Sell" },
-  { href: "/login", label: "Login" },
-  { href: "/signup", label: "Sign Up" },
-];
+import { useRouter } from "next/router";
+import Image from "next/image";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Nav() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const logout = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: "/login" });
+    router.push(data.url);
+  };
+
+  if (status === "authenticated") {
+    var links = [
+      { href: "/shop", label: "Shop" },
+      { href: "/addproducts", label: "Add Products" },
+      { href: "/user-profile", label: "User Profile" },
+      { href: "/logout", label: "Logout" },
+    ];
+  } else {
+    links = [
+      { href: "/shop", label: "Shop" },
+      { href: "/login", label: "Login" },
+      { href: "/signup", label: "Sign Up" },
+    ];
+  }
   return (
     <div className="flex items-center justify-between p-4">
       <div className="flex items-center justify-start grow flex-1">
-        <Logo />
+        <Link href="/">
+          <Logo />
+        </Link>
       </div>
 
       <div className="flex items-center justify-end grow flex-1">
-		<div className="sm:block hidden">
-		<InlineMenu/>
-		</div>
-		<div className="sm:hidden block">
-
-        <HamMenu />
-		</div>
+        <div className="md:block hidden">
+          <InlineMenu links={links} logout={logout} />
+        </div>
+        <div className="md:hidden block z-10">
+          <HamMenu links={links} logout={logout} />
+        </div>
       </div>
     </div>
   );
@@ -33,7 +50,7 @@ function Logo() {
   return (
     <Image
       className="object-contain rounded-full"
-      src="/logo.jpg"
+      src="/WebLogo.png"
       alt="logo of Luther Marketplace"
       width={75}
       priority={true}
@@ -42,26 +59,36 @@ function Logo() {
     />
   );
 }
-
-function InlineMenu(){
-	return(
-		<nav className="flex flex-row items-center justify-between">
-    <div className="text-lg lg:flex-grow">
-                  {links.map((link) => {
-                    return (
-
-      <div key={link.href} className=" mt-4 inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-<Link href={link.href}>{link.label}</Link>
-		
+interface LinksName {
+  href: string;
+  label: string;
+}
+function InlineMenu({ links, logout }: { links: LinksName[]; logout: any }) {
+  return (
+    <nav className="flex flex-row items-center justify-between">
+      <div className="text-lg lg:flex-grow">
+        {links.map((link) => {
+          return (
+            <div
+              key={link.href}
+              className=" mt-4 inline-block lg:mt-0 text-blue-500 hover:text-blue-800 transition-all duration-300 mr-4"
+            >
+              {link.label === "Logout" ? (
+                <button className="" type="button" onClick={logout}>
+                  Logout
+                </button>
+              ) : (
+                <Link href={link.href}>{link.label}</Link>
+              )}
+            </div>
+          );
+        })}
       </div>
-                    );
-                  })}
-    </div>
-</nav>
-	)
+    </nav>
+  );
 }
 
-function HamMenu() {
+function HamMenu({ links, logout }: { links: LinksName[]; logout: any }) {
   return (
     <div className="relative inline-block text-left">
       <Menu>

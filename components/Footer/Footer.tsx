@@ -27,7 +27,7 @@ function LogoBrand() {
       <div className="flex flex-row items-center space-x-2 sm:space-x-5 ">
         <Image
           className="object-contain rounded-full md:w-50 md:h-50"
-          src="/logo.jpg"
+          src="/WebLogo.png"
           alt="logo of Luther Marketplace"
           width={50}
           priority={true}
@@ -103,7 +103,7 @@ function PrivacyCopyright() {
         <Link href="/copyright" className="text-center">
           Copyright Notice
         </Link>
-        <Link href="/privacypolicy" className="text-center">
+        <Link href="/privacy" className="text-center">
           Privacy
         </Link>
         <Link href="/terms" className="text-center">

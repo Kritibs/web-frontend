@@ -1,110 +1,103 @@
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 
-const baseURL = process.env.baseURL;
-export function fetcher(url:string, request_method:string, content_type:string ='', data:any){
-	if (request_method=="GET"){
-		return get_fetcher(url)
-	}
-	else if (request_method=="POST"){
-		return post_fetcher(url,request_method, content_type, data)
-	}
-	else if (request_method=="PATCH"){
-		return patch_fetcher(url,request_method, content_type, data)
-	}
-	else if (request_method=="DELETE"){
-		return del_fetcher(url,request_method)
+const baseURL = process.env.NEXT_PUBLIC_baseURL!;
+
+
+export function post_fetcher(
+  url: string,
+  content_type: string,
+  data: string | FormData,
+  session:any
+) {
+// const { data: session, status } = useSession();
+  const myHeaders = new Headers();
+  if (session) {
+    myHeaders.append("Authorization", "JWT " + session.user?.access);
+  }
+  myHeaders.append("Accept", "application/json");
+
+  {
+    content_type != ""
+      ? myHeaders.append("Content-Type", content_type)
+      : myHeaders;
+  }
+
+  return fetch(baseURL + url, {
+    method: "POST",
+    headers: myHeaders,
+    body: data,
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("An Error occured");
+      } else {
+        return res.json();
+      }
+    })
+    .catch((error) => {
+      throw error;
+    });
 }
+
+export function patch_fetcher(
+  url: string,
+  content_type: string,
+  data: string | FormData,
+  session:any
+) {
+  const myHeaders = new Headers();
+  if (session) {
+    myHeaders.append("Authorization", "JWT " + session.user?.access);
+  }
+  // myHeaders.append("Content-Type", content_type);
+  return fetch(baseURL + url, {
+    method: "PATCH",
+    headers:myHeaders,
+    // body: JSON.stringify(data),
+    body: data,
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
-function post_fetcher (url:string,request_method:string,content_type:string, data:string){
-	if (url=="login/"){
-	return fetch(baseURL + url, {
-		method: request_method,
-		headers: 
-			 content_type!='' ?
-			{"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
-			"Accept": "application/json",
-			"Content-Type": content_type,}:
-			{
-		"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
-			"Accept": "application/json",
-		}
-,	
-		// body: JSON.stringify(data),
-		body: data,
-	})
-		.then((res) => res.json())
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-	}
-	else{
-	return fetch(baseURL + url, {
-		method: request_method,
-		headers: 
-			 content_type!='' ?
-			{"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
-			"Accept": "application/json",
-			"Content-Type": content_type,}:
-			{
-		"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
-			"Accept": "application/json",
-		}
-,	
-		// body: JSON.stringify(data),
-		body: data,
-	})
-		.then((res) => res.json())
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-	}
-};
+export function get_fetcher(url: string) {
+  const finalURL = baseURL.concat(url);
+  return fetch(finalURL, {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
+export function del_fetcher(url: string, session:any) {
+  const myHeaders = new Headers();
+  if (session) {
+    myHeaders.append("Authorization", "JWT " + session.user?.access);
+  }
+  return fetch(baseURL + url, {
+    method: "DELETE",
+    headers: myHeaders,
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
+// export const fetchAll = (url:string, content_type:string, body:any)=>{
 
-function patch_fetcher (url:string,request_method:string,content_type:string, data:string){
-	return fetch(baseURL + url, {
-		method: request_method,
-		// body: JSON.stringify(data),
-		body: data,
- headers: {
-      'Content-Type': content_type
-    },
-			 
-	})
-		.then((res) => res.json())
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-};
+//   const { data, error } = useSWR([url, content_type, body],
+//     ([url, content_type, data]) => post_fetcher(url, content_type, data)
 
-export function get_fetcher (url:string) {
-	return fetch(baseURL + url, {
-		method: 'GET',
+//   );
+//   if (error){
 
-	})
-		.then((res) => res.json())
-		.catch((error) => {
-			console.error("Error:", error);
-		});
+//   return ["error",error]
+//   }
+//   return ["data",data]
 
-};
-
-
-function del_fetcher (url:string,request_method:string){
-		const headers_data={ 
-		"Authorization":localStorage.getItem('access_token')?'JWT '+localStorage.getItem('access_token'):'',
-			"Accept": "application/json",
-		}
-    let headers= new Headers(headers_data)
-	return fetch(baseURL + url, {
-		method: request_method,
-        headers: headers
-,	
-	})
-		.then((res) => res.json())
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-};
-
+// }
