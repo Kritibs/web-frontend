@@ -71,7 +71,7 @@ function InlineMenu({ links, logout }: { links: LinksName[]; logout: any }) {
           return (
             <div
               key={link.href}
-              className=" mt-4 inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+              className=" mt-4 inline-block lg:mt-0 text-blue-500 hover:text-blue-800 transition-all duration-300 mr-4"
             >
               {link.label === "Logout" ? (
                 <button className="" type="button" onClick={logout}>
