@@ -72,7 +72,7 @@ export default function AddProducts({ edit }: { edit: Boolean }) {
       | React.ChangeEvent<HTMLSelectElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    if (e.target.name === "product_condtion") {
+    if (e.target.name === "product_condition") {
       setProductCondition(e.target.value);
     }
     if (e.target.name === "product_action") {
