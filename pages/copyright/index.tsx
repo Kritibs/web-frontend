@@ -5,7 +5,7 @@ export default function copyright(){
     return(
         <>
         <Head>
-        <title>Luther Marketplace</title>
+        <title>Copyright Notice</title>
         <meta name="description" content="Copyright Notice" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/fabicon.png" />
