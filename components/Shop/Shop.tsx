@@ -97,7 +97,7 @@ export function ProductCard({ product }: { product: any }) {
               {product.product_description}
             </div>
           </div>
-          <div className={styles.productprice}>{product.product_price}</div>
+          <div className={styles.productprice}>${product.product_price}</div>
           <Link
             href={`mailto:${user?.email ? user.email : ""}`}
             className="relative inline-flex w-[200px] items-center justify-center px-3 py-0 overflow-hidden font-medium text-blue-500 transition duration-300 ease-out border-2 border-blue-500 rounded-full shadow-md group"
