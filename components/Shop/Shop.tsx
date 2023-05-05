@@ -99,7 +99,9 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
           <div className={styles.productprice}>${product.product_price}</div>
           <a
-            href={`mailto:${user ? user.email : ""}`}
+            href={`mailto:${user?.email ? user.email : ""}?subject=${
+              product.product_name
+            } lisiting from Luther Marketplace!&body=Hey, I am interested in your recent listing. Is it still available`}
             className="relative inline-flex w-[200px] items-center justify-center px-3 py-0 overflow-hidden font-medium text-blue-500 transition duration-300 ease-out border-2 border-blue-500 rounded-full shadow-md group"
           >
             <div>
