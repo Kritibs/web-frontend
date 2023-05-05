@@ -76,25 +76,23 @@ const ProductDetail = () => {
 const Button = ({
   func,
   text,
-  color,
 }: {
   func: any;
   text: string;
-  color: string;
 }) => {
   return (
     <div>
       {text==="Edit"?
       <button
         onClick={func}
-        className={`bg-blue-500 hover:bg-${color}-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-${color}-700 rounded-full`}
+        className={`bg-blue-500 hover:bg-blue-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-blue-700 rounded-full`}
       >
         {text}
       </button>
       :
       <button
         onClick={func}
-        className={`bg-red-500 hover:bg-${color}-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-${color}-700 rounded-full`}
+        className={`bg-red-500 hover:bg-red-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-red-700 rounded-full`}
       >
         {text}
       </button>
