@@ -72,7 +72,7 @@ export default function UserProfile() {
                 <>
                   <div>
                     <Link href={`/shop/${product.id}`}>
-                      <ProductCard product={product} />
+                      <ProductCard product={product} page="userprofile"/>
                     </Link>
                   </div>
                 </>

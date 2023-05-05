@@ -46,7 +46,7 @@ export default function Shop() {
             return (
               <div key={product.id}>
                 <Link href={`/shop/${product.id}`}>
-                  <ProductCard product={product} />
+                  <ProductCard product={product} page="shop" />
                 </Link>
               </div>
             );
@@ -57,7 +57,7 @@ export default function Shop() {
   }
 }
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, page }: { product: Product , page:string}) {
   const { data: session, status } = useSession();
 
   const { data: products, error: product_error } = useSWR(
@@ -98,6 +98,7 @@ export function ProductCard({ product }: { product: Product }) {
             </div>
           </div>
           <div className={styles.productprice}>${product.product_price}</div>
+          {page==="shop"? <></>:
           <a
             href={`mailto:${user?.email ? user.email : ""}?subject=${
               product.product_name
@@ -129,6 +130,7 @@ export function ProductCard({ product }: { product: Product }) {
               </span>
             </div>
           </a>
+}
         </div>
       </div>
     </div>
