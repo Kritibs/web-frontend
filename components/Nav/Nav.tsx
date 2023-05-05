@@ -127,20 +127,36 @@ function HamMenu({ links, logout }: { links: LinksName[]; logout: any }) {
                 className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
               >
                 <div className="py-1">
-                  {links.map((link) => {
+                  {links.map((link) =>{
                     return (
                       <Menu.Item key={link.href}>
                         {({ active }) => (
-                          <a
-                            href={link.href}
-                            className={`${
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700"
-                            } flex justify-between w-full px-4 py-2 text-sm leading-5 text-left`}
-                          >
-                            {link.label}
-                          </a>
+                          <>
+                            {link.label === "Logout" ? (
+                              <button
+                                className={`${
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700"
+                                } flex justify-between w-full px-4 py-2 text-sm leading-5 text-left`}
+                                type="button"
+                                onClick={logout}
+                              >
+                                Logout
+                              </button>
+                            ) : (
+                              <a
+                                href={link.href}
+                                className={`${
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700"
+                                } flex justify-between w-full px-4 py-2 text-sm leading-5 text-left`}
+                              >
+                                {link.label}
+                              </a>
+                            )}
+                          </>
                         )}
                       </Menu.Item>
                     );
