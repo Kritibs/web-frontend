@@ -9,7 +9,7 @@ import jwtDecode from "jwt-decode";
 export interface Product {
   id: number;
   product_name: string;
-  product_picture: null | File;
+  product_picture: string | null | File;
   product_description: string;
   product_condition: string;
   product_action: string;
@@ -57,7 +57,7 @@ export default function Shop() {
   }
 }
 
-export function ProductCard({ product }: { product: any }) {
+export function ProductCard({ product }: { product: Product }) {
   const { data: session, status } = useSession();
 
   const { data: products, error: product_error } = useSWR(
@@ -78,7 +78,7 @@ export function ProductCard({ product }: { product: any }) {
       <div className={styles.productcard} /* key={product.id} */>
         <Image
           className={styles.productimage}
-          src={product.product_picture}
+          src={product.product_picture as string}
           width={500}
           height={500}
           alt="Search bar picture"
@@ -98,33 +98,35 @@ export function ProductCard({ product }: { product: any }) {
             </div>
           </div>
           <div className={styles.productprice}>${product.product_price}</div>
-          <Link
-            href={`mailto:${user?.email ? user.email : ""}`}
+          <a
+            href={`mailto:${user ? user.email : ""}`}
             className="relative inline-flex w-[200px] items-center justify-center px-3 py-0 overflow-hidden font-medium text-blue-500 transition duration-300 ease-out border-2 border-blue-500 rounded-full shadow-md group"
           >
-            <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-blue-500 group-hover:translate-x-0 ease">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                />
-              </svg>
-            </span>
-            <span className="absolute flex items-center justify-center h-full text-blue-500 transition-all duration-300 transform group-hover:translate-x-full ease">
-              Contact Seller
-            </span>
-            <span className="relative invisible bg-transparent border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded-full transition duration-300 ml-auto hover:animate-pulse">
-              Contact Seller
-            </span>
-          </Link>
+            <div>
+              <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-blue-500 group-hover:translate-x-0 ease">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                  />
+                </svg>
+              </span>
+              <span className="absolute flex items-center justify-center h-full text-blue-500 transition-all duration-300 transform group-hover:translate-x-full ease">
+                Contact Seller
+              </span>
+              <span className="relative invisible bg-transparent border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded-full transition duration-300 ml-auto hover:animate-pulse">
+                Contact Seller
+              </span>
+            </div>
+          </a>
         </div>
       </div>
     </div>

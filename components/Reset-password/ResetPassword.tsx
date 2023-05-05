@@ -14,7 +14,7 @@ export default function ResetPassword() {
 
 function SetPassword({ session }: { session: any }) {
   const router = useRouter();
-
+  const [error, setError]=useState('')
   const [fields, setFields] = useState({
     password: "",
     password2: "",
@@ -32,18 +32,19 @@ function SetPassword({ session }: { session: any }) {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    console.log(fields);
 
-    // const response = await fetcher(`accounts/new-password/${router.query.uidb64}/${router.query.token}`, "PATCH", 'application/json',JSON.stringify(fields));
-
+try{
     const response = await patch_fetcher(
       `accounts/new-password/${router.query.uidb64}/${router.query.token}`,
-      "",
+      'application/json',
       JSON.stringify(fields),
       session
     );
-    console.log(response);
-    router.push("/");
+    router.push("/login");
+    }
+    catch(e:any){
+        setError(e.message.toString());
+    }
   };
 
   return (
@@ -63,10 +64,9 @@ function SetPassword({ session }: { session: any }) {
               required
               onChange={handleChange}
             />
-            <br></br>
             <input
               className=""
-              type="password2"
+              type="password"
               id="password2"
               name="password2"
               placeholder="Password Confirmation"
@@ -77,6 +77,7 @@ function SetPassword({ session }: { session: any }) {
             <button className="" type="button" onClick={handleSubmit}>
               Send Reset Link
             </button>
+          <div className="mt-5 mb-10 text-red-500">{error}</div>
           </form>
         </div>
       </div>
@@ -86,6 +87,7 @@ function SetPassword({ session }: { session: any }) {
 
 function Email({ session }: { session: any }) {
   const router = useRouter();
+  const [error, setError]=useState("")
   const [fields, setFields] = useState({
     email: "",
   });
@@ -100,14 +102,20 @@ function Email({ session }: { session: any }) {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
+    try{
+
     const response = await post_fetcher(
       "accounts/request-password-reset/",
       'application/json',
       JSON.stringify(fields),
       session
     );
-    console.log(response);
-    // router.push("/reset-password");
+    router.push("/");
+
+    }
+    catch(e:any){
+        setError(e.message.toString());
+    }
   };
   return (
     <main className="">
@@ -133,6 +141,7 @@ function Email({ session }: { session: any }) {
             <button className="" type="button" onClick={handleSubmit}>
               Send Reset Link
             </button>
+          <div className="mt-5 mb-10 text-red-500">{error}</div>
           </form>
         </div>
       </div>

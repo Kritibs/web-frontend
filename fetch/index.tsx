@@ -50,6 +50,11 @@ export function patch_fetcher(
   if (session) {
     myHeaders.append("Authorization", "JWT " + session.user?.access);
   }
+  {
+    content_type != ""
+      ? myHeaders.append("Content-Type", content_type)
+      : myHeaders;
+  }
   // myHeaders.append("Content-Type", content_type);
   return fetch(baseURL + url, {
     method: "PATCH",
