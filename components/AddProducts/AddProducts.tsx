@@ -23,7 +23,7 @@ var productDetail: Product = {
   product_author: 1,
 };
 
-export default function AddProducts({edit}:{edit:Boolean}) {
+export default function AddProducts({ edit }: { edit: Boolean }) {
   const router = useRouter();
   const [fields, setFields] = useState(productDetail);
   const [error, setError] = useState("");
@@ -32,22 +32,19 @@ export default function AddProducts({edit}:{edit:Boolean}) {
   );
   const [productAction, setProductAction] = useState(fields.product_action);
   const { data: session, status } = useSession();
-  const { data: product, error: product_detail_error } = useSWR(edit?
-    `products/${router.query.id}`:null,
+  const { data: product, error: product_detail_error } = useSWR(
+    edit ? `products/${router.query.id}` : null,
     get_fetcher
   );
-
-
-  
 
   var decodedUser: DecodedToken = decodedData;
 
   useEffect(() => {
     if (status === "authenticated") {
-        setFields((prev) => ({
-          ...prev,
+      setFields((prev) => ({
+        ...prev,
         ["product_author"]: decodedUser.user_id,
-        }));
+      }));
     }
     if (product) {
       for (let key in product) {
@@ -57,12 +54,11 @@ export default function AddProducts({edit}:{edit:Boolean}) {
         }));
       }
     }
-  }, [product,decodedUser.user_id,status]);
+  }, [product, decodedUser.user_id, status]);
 
-  if(edit){
-  if (!product) return <h1>I am loading</h1>;
-  if (product_detail_error) return <h1>there is error</h1>;
-
+  if (edit) {
+    if (!product) return <h1>I am loading</h1>;
+    if (product_detail_error) return <h1>there is error</h1>;
   }
 
   if (session && status == "authenticated") {
