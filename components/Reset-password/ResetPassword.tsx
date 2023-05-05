@@ -92,6 +92,7 @@ function SetPassword({ session }: { session: any }) {
               onChange={handleChange}
             />
             <br></br>
+            <div className="mt-1"></div>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={handleSubmit}>
               Reset Password
             </button>
