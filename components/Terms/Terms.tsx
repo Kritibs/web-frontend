@@ -1,9 +1,9 @@
 export default function Terms() {
   return (
     <div>
-      <h1>Terms of Use</h1>
-      <h3 className=''>Last updated: December 6, 2022</h3>
-      <h2 className=''>
+      <h1 className="text-center">Terms of Use</h1>
+      <h3 className='text-center sm:text-left px-4 py-8'>Last updated: May 01, 2023</h3>
+      <h2 className='text-center sm:text-left px-4'>
         1. AGREEMENT TO TERMS These Terms of Use constitute a legally binding
         agreement made between you, whether personally or on behalf of an entity
         (you) and (Company. we. us, or our), concerning your access to
@@ -33,13 +33,16 @@ export default function Terms() {
         within such jurisdiction or country. Accordingly, those persons who
         choose to access the Site from other locations do so on their own
         initiative and are solely responsible for compliance with local laws, if
-        and to the extent local laws are applicable. You are advised to review
-        these Terms of Use periodically for any changes. Changes to these Terms
+        and to the extent local laws are applicable. 
+        <br></br>
+        <br></br>
+        You are advised to review these Terms of Use periodically for any changes. Changes to these Terms
         of Use are effective when they are posted on this page.
-        <u>Contact Us</u>
-        If you have any questions about these Terms, You can contact us: by
+        Contact us If you have any questions about these Terms, You can contact us: by
         phone number at +1 (563) 235-1363 or by email at musami01@luther.edu
       </h2>
+      <br></br>
+      <br></br>
     </div>
   );
 }

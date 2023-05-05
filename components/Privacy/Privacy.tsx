@@ -1,9 +1,9 @@
 export default function Privacy() {
   return (
     <div className=''>
-      <h1>Pivacy Statement</h1>
-      <h3 className=''>Last updated: December 6, 2022</h3>
-      <h2 className=''>
+      <h1 className="text-center">Pivacy Statement</h1>
+      <h3 className='text-center sm:text-left px-4 py-8'>Last updated: May 01, 2023</h3>
+      <h2 className='text-center sm:text-left px-4'>
         This Privacy Policy describes Our policies and procedures on the
         collection, use and disclosure of Your information when You use the
         Service and tells You about Your privacy rights and how the law protects
@@ -14,6 +14,7 @@ export default function Privacy() {
         <br></br>
         <br></br>
         <u>Interpretation and Definitions</u>
+        <br></br>
         <br></br>
         The words of which the initial letter is capitalized have meanings
         defined under the following conditions. The following definitions shall
@@ -177,6 +178,8 @@ export default function Privacy() {
         If you have any questions about this Privacy Policy, You can contact us:
         by phone number at +1 (563) 235-1363 or by email at musami01@luther.edu
       </h2>
+      <br></br>
+      <br></br>
     </div>
   );
 }

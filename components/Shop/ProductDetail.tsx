@@ -24,6 +24,8 @@ const ProductDetail = () => {
   }
 
   const { data, error } = useSWR(`products/${id}`, get_fetcher);
+
+  
   const DeleteProduct = (event: any) => {
     event.preventDefault();
     const res = del_fetcher(`products/${id}`, session).then(() => {
@@ -54,7 +56,7 @@ const ProductDetail = () => {
             <ProductCard product={data} />
             <div className="flex flex-rows justify-evenly my-10">
               <Button func={editProduct} text="Edit" color="blue" />
-              <Button func={DeleteProduct} text="Delete" color="red" />
+              <Button func={DeleteProduct} text="Delete" color="blue" />
             </div>
           </div>
         </>
@@ -84,7 +86,7 @@ const Button = ({
     <div>
       <button
         onClick={func}
-        className={`bg-${color}-500 hover:bg-${color}-700 w-32 sm:w-44 text-white font-bold py-4 text-xl px-4 border border-${color}-700 rounded`}
+        className={`bg-${color}-500 hover:bg-${color}-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-${color}-700 rounded-full`}
       >
         {text}
       </button>

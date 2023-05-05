@@ -49,7 +49,7 @@ export default function Nav() {
 function Logo() {
   return (
     <Image
-      className="object-contain rounded-full"
+      className="object-contain rounded-full hover:rotate-90 transition duration-500"
       src="/WebLogo.png"
       alt="logo of Luther Marketplace"
       width={75}

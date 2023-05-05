@@ -1,9 +1,11 @@
 export default function Copyright() {
   return (
     <div className="">
-      <h1>INTELLECTUAL PROPERTY RIGHTS</h1>
-      <h3 className="">Last updated: December 6, 2022</h3>
-      <h2 className="">
+      <h1 className="text-center">INTELLECTUAL PROPERTY RIGHTS</h1>
+      <br></br>
+      <h3 className="text-center sm:text-left px-4">Last updated: May 01, 2023</h3>
+      <br></br>
+      <h2 className="text-center sm:text-left px-4">
         Unless otherwise indicated, Luther Marketplace is our proprietary
         property and all source code, databases, functionality, software,
         website designs, audio, video, text, photographs, and graphics on the
@@ -40,6 +42,8 @@ export default function Copyright() {
         If you have any questions about this Privacy Policy, You can contact us:
         by phone number at +1 (563) 235-1363 or by email at musami01@luther.edu
       </h2>
+      <br></br>
+      <br></br>
     </div>
   );
 }
