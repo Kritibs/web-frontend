@@ -71,7 +71,7 @@ export function ProductCard({ product }: { product: any }) {
   }
 
   const { data: user, error: user_error } = useSWR(
-    "accounts/" + decodedData.user_id,
+    "accounts/" + product.product_author,
     get_fetcher
   );
   return (
