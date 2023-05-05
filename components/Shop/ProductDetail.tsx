@@ -53,7 +53,7 @@ const ProductDetail = () => {
       return (
         <>
           <div className="mt-16 mb-20">
-            <ProductCard product={data} />
+            <ProductCard product={data} page="productdetail" />
             <div className="flex flex-rows justify-evenly my-10">
               <Button func={editProduct} text="Edit"/>
               <Button func={DeleteProduct} text="Delete"/>
@@ -65,7 +65,7 @@ const ProductDetail = () => {
       return (
         <>
           <div className="mt-16 mb-20">
-            <ProductCard product={data} />
+            <ProductCard product={data} page="productdetail" />
           </div>
         </>
       );
