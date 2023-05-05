@@ -55,8 +55,8 @@ const ProductDetail = () => {
           <div className="mt-16 mb-20">
             <ProductCard product={data} />
             <div className="flex flex-rows justify-evenly my-10">
-              <Button func={editProduct} text="Edit" color="blue" />
-              <Button func={DeleteProduct} text="Delete" color="blue" />
+              <Button func={editProduct} text="Edit"/>
+              <Button func={DeleteProduct} text="Delete"/>
             </div>
           </div>
         </>
@@ -84,12 +84,22 @@ const Button = ({
 }) => {
   return (
     <div>
+      {text==="Edit"?
       <button
         onClick={func}
-        className={`bg-${color}-500 hover:bg-${color}-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-${color}-700 rounded-full`}
+        className={`bg-blue-500 hover:bg-${color}-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-${color}-700 rounded-full`}
       >
         {text}
       </button>
+      :
+      <button
+        onClick={func}
+        className={`bg-red-500 hover:bg-${color}-700 w-28 sm:w-40 text-white font-bold py-2 text-xl px-2 border border-${color}-700 rounded-full`}
+      >
+        {text}
+      </button>
+
+      }
     </div>
   );
 };
