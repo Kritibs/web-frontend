@@ -57,7 +57,7 @@ export default function UserProfile() {
       <h1 className="text-2xl text-center py-2 animate-pulse">
           Welcome Back {user?.first_name ? user.first_name : ""} !
       </h1>
-      <h2 className="text-md text-center py-4 mb-4">
+      <h2 className="text-md text-center py-4 px-1 mb-4">
           These are the items you have listed on Luther Marketplace
       </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-2 gap-4 sm:gap-2">

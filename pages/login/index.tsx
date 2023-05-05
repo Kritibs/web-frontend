@@ -5,7 +5,7 @@ export default function login(){
     return(
         <>
         <Head>
-        <title>Luther Marketplace</title>
+        <title>Marketplace Login</title>
         <meta name="description" content="Marketplace Login" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/fabicon.png" />
